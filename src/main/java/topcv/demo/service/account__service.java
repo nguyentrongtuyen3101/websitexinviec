@@ -1,7 +1,10 @@
 package topcv.demo.service;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
+import topcv.demo.entity.CV;
 import topcv.demo.entity.Company;
 import topcv.demo.entity.User;
 
@@ -24,4 +27,9 @@ public interface account__service {
 	public Company timcompanybyuserid(User user);
 	public void updatecompany( Company company);
 	public String capnhatthongtincongty( Company company,MultipartFile descriptionFile);
+	public void uploadlogo(Company company);
+	public String updatelogovaodb( Company company);
+	public void createCV(CV cv);
+	public String luucvvaodb(CV cv,MultipartFile descriptionFile);
+	public List<CV> getCV(User user);
 }

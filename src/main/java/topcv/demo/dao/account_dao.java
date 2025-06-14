@@ -1,11 +1,13 @@
 package topcv.demo.dao;
 
 import java.awt.desktop.UserSessionEvent;
+import java.util.List;
 
 import javax.swing.table.TableStringConverter;
 
 import org.springframework.stereotype.Repository;
 
+import topcv.demo.entity.CV;
 import topcv.demo.entity.Company;
 import topcv.demo.entity.User;
 
@@ -17,7 +19,10 @@ public interface account_dao {
 	public void updatemk( String gmail, String mkmoi);
 	public void updateaccount( User user);
 	public void uploadanh(User user);
+	public void uploadlogo(Company company);
 	public void saveorupdatecompany(Company company);
 	public Company timcompanybyuserid(User user);
 	public void updatecompany( Company company);
+	public void createCV(CV cv);
+	public List<CV> getCV(User user);
 }

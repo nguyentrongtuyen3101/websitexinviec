@@ -1,5 +1,7 @@
 package topcv.demo.dao;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -7,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import topcv.demo.entity.CV;
 import topcv.demo.entity.Company;
 import topcv.demo.entity.User;
 
@@ -78,6 +81,16 @@ public class account_dao_imp implements account_dao{
 	 }
 	 @Override
 	 @Transactional
+	 public void uploadlogo(Company company)
+	 {
+		 Session session = sessionFactory.getCurrentSession();
+	        Query query = session.createQuery("UPDATE Company SET logo=:logo WHERE user = :user");
+	        query.setParameter("logo", company.getLogo());  
+	        query.setParameter("user", company.getUser());
+	        query.executeUpdate(); 
+	 }
+	 @Override
+	 @Transactional
 	 public void saveorupdatecompany(Company company)
 	 {
 		 Session session=sessionFactory.getCurrentSession();
@@ -96,6 +109,8 @@ public class account_dao_imp implements account_dao{
 				 return null;
 			}  
 	 }
+	 @Override
+	 @Transactional
 	 public void updatecompany( Company company)
 	 {
 		 Session session = sessionFactory.getCurrentSession();
@@ -108,4 +123,20 @@ public class account_dao_imp implements account_dao{
 	        query.setParameter("user", company.getUser());
 	        query.executeUpdate(); 
 	 }
+	 @Override
+	 @Transactional
+	 public void createCV(CV cv)
+	 {
+		 Session session=sessionFactory.getCurrentSession();
+		 session.saveOrUpdate(cv);
+	 }
+	 @Override
+	 @Transactional
+		public List<CV> getCV(User user)
+		{
+			 Session currentSession = sessionFactory.getCurrentSession();
+		      Query<CV> theQuery = currentSession.createQuery("from CV where user=:user", CV.class);
+		      theQuery.setParameter("user", user);
+		      return theQuery.getResultList();
+		}
 }

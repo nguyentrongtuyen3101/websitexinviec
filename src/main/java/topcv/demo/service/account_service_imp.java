@@ -5,6 +5,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.servlet.ServletContext;
@@ -18,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import topcv.demo.dao.account_dao;
+import topcv.demo.entity.CV;
 import topcv.demo.entity.Company;
 import topcv.demo.entity.User;
 import topcv.demo.entity.User.Role;
@@ -149,72 +155,97 @@ public class account_service_imp implements account__service{
 			return"success";
 	 }
 	 @Override
-	    @Transactional
-	    public String uploadFile(MultipartFile file, User user, String fileType,Company company) {
-	        if (file == null || file.isEmpty()) {
-	            return "error: Vui lòng chọn một file ảnh!";
-	        }
-
-	        try {
-	            // Lấy đường dẫn thực tế của thư mục uploads từ ServletContext
-	            String realPath = servletContext.getRealPath(UPLOAD_DIR);
-	            Path uploadPath = Paths.get(realPath);
-	            if (!Files.exists(uploadPath)) {
-	                Files.createDirectories(uploadPath);
-	            }
-
-	            // Tạo tên file duy nhất
-	            String originalFileName = file.getOriginalFilename();
-	            String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
-	            String uniqueFileName = UUID.randomUUID().toString() + fileExtension;
-
-	            Path filePath = uploadPath.resolve(uniqueFileName);
-	            Files.write(filePath, file.getBytes());
-
-	            // Cập nhật trường tương ứng trong user
-	            if ("image".equals(fileType)) {
-	                user.setImage(uniqueFileName);
-	            } else if ("logo".equals(fileType)) {
-	                company.setLogo(uniqueFileName);
-	            } else {
-	                return "error: Loại file không hợp lệ!";
-	            }
-
-	            return "success";
-	        } catch (IOException e) {
-	            return "error: Lỗi khi upload ảnh: " + e.getMessage();
-	        } catch (Exception e) {
-	            return "error: Lỗi không mong muốn: " + e.getMessage();
-	        }
-	    }
-	 @Override
 	 @Transactional
-	 public String uploadDescriptionFile(MultipartFile file, String fileType) {
+	 public String uploadFile(MultipartFile file, User user, String fileType, Company company) {
 	     if (file == null || file.isEmpty()) {
-	         return "error: Vui lòng chọn một file!";
+	         return "error: Vui lòng chọn một file ảnh!";
 	     }
 
 	     try {
+	         // Lấy đường dẫn thực tế của thư mục uploads từ ServletContext
 	         String realPath = servletContext.getRealPath(UPLOAD_DIR);
 	         Path uploadPath = Paths.get(realPath);
 	         if (!Files.exists(uploadPath)) {
 	             Files.createDirectories(uploadPath);
 	         }
 
+	         // Lấy phần mở rộng và tên file gốc
 	         String originalFileName = file.getOriginalFilename();
-	         String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+	         String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".")).toLowerCase();
+	         // Danh sách các định dạng ảnh hợp lệ
+	         Set<String> validImageExtensions = new HashSet<>(Arrays.asList(".jpg", ".jpeg", ".png", ".gif", ".bmp"));
+	         if (!validImageExtensions.contains(fileExtension)) {
+	             return "error: File không phải là ảnh! Vui lòng chọn file có định dạng .jpg, .jpeg, .png, .gif hoặc .bmp.";
+	         }
+
+	         // Kiểm tra thêm loại MIME để đảm bảo là ảnh (tùy chọn)
+	         String mimeType = file.getContentType();
+	         if (!mimeType.startsWith("image/")) {
+	             return "error: File không phải là ảnh! Vui lòng chọn file ảnh hợp lệ.";
+	         }
+
+	         // Tạo tên file duy nhất
 	         String uniqueFileName = UUID.randomUUID().toString() + fileExtension;
 
 	         Path filePath = uploadPath.resolve(uniqueFileName);
 	         Files.write(filePath, file.getBytes());
 
-	         return uniqueFileName; // Trả về tên file duy nhất
+	         // Cập nhật trường tương ứng trong user hoặc company
+	         if ("image".equals(fileType)) {
+	             user.setImage(uniqueFileName);
+	         } else if ("logo".equals(fileType)) {
+	             company.setLogo(uniqueFileName);
+	         } else {
+	             return "error: Loại file không hợp lệ!";
+	         }
+
+	         return "success";
+	     } catch (IOException e) {
+	         return "error: Lỗi khi upload ảnh: " + e.getMessage();
+	     } catch (Exception e) {
+	         return "error: Lỗi không mong muốn: " + e.getMessage();
+	     }
+	 }
+	 @Override
+	 @Transactional
+	 public String uploadDescriptionFile(MultipartFile file, String fileType) {
+	     if (file == null || file.isEmpty()) {
+	         return "error: Vui lòng chọn một file!";
+	     }
+	     try {
+	         String realPath = servletContext.getRealPath(UPLOAD_DIR);
+	         Path uploadPath = Paths.get(realPath);
+	         if (!Files.exists(uploadPath)) {
+	             Files.createDirectories(uploadPath);
+	         }
+	         String originalFileName = file.getOriginalFilename();
+	         String shortId = generateShortId(6);
+	         String uniqueFileName = shortId + "_" + originalFileName;
+	         Path filePath = uploadPath.resolve(uniqueFileName);
+	         if (Files.exists(filePath)) {
+	             // Nếu file tồn tại, thử tạo mã mới
+	             shortId = generateShortId(6);
+	             uniqueFileName = shortId + "_" + originalFileName;
+	             filePath = uploadPath.resolve(uniqueFileName);
+	         }
+	         Files.write(filePath, file.getBytes());
+	         return uniqueFileName;
 	     } catch (IOException e) {
 	         return "error: Lỗi khi upload file: " + e.getMessage();
 	     } catch (Exception e) {
 	         return "error: Lỗi không mong muốn: " + e.getMessage();
 	     }
 	 }
+	 private static final String BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+	 private String generateShortId(int length) {
+	     Random random = new Random();
+	     StringBuilder sb = new StringBuilder(length);
+	     for (int i = 0; i < length; i++) {
+	         sb.append(BASE62.charAt(random.nextInt(BASE62.length())));
+	     }
+	     return sb.toString();
+	 }
+
 	 @Override
 	 @Transactional
 	 public void saveorupdatecompany(Company company)
@@ -252,5 +283,51 @@ public class account_service_imp implements account__service{
 			updatecompany(company);
 			return"success";
 	 }
+	 @Override
+	 @Transactional
+	 public void uploadlogo(Company company)
+	 {
+		 account_dao.uploadlogo(company);
+	 }
+	 @Override
+	 @Transactional
+	 public String updatelogovaodb(Company company)
+	 {
+		 try {
+			 uploadlogo(company);
+			 return"success";
+		} catch (Exception e) {
+			return"error";
+		}	
+	 }
+	 @Override
+	 @Transactional
+	 public void createCV(CV cv)
+	 {
+		 account_dao.createCV(cv);
+	 }
+	 @Override
+	 @Transactional
+	 public String luucvvaodb(CV cv,MultipartFile descriptionFile)
+	 {
+		 if (descriptionFile != null && !descriptionFile.isEmpty()) {
+	            String uploadResult = uploadDescriptionFile(descriptionFile, "fileName");
+	            if (uploadResult.startsWith("error:")) {
+	                return uploadResult; 
+	            }
+	            cv.setFileName(uploadResult);
+	        }
+		 try {
+			createCV(cv);
+			return"success";
+		} catch (Exception e) {
+			return"error";
+		}
+	 }
+	 public List<CV> getCV(User user)
+	 {
+		 return account_dao.getCV(user);
+	 }
 }
+
 

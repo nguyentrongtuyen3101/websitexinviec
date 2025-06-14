@@ -33,8 +33,8 @@ public class Company {
     @Column(name = "status")
     private int status;
 
-    @OneToOne
-    @JoinColumn(name = "user_id") // Cột user_id tham chiếu đến id của User
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id") 
     private User user;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)

@@ -44,7 +44,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role_name")
-    private Role roleName; // Sử dụng enum Role khai báo trong class
+    private Role roleName; 
 
     @Column(name = "cv_id")
     private Integer cvId;
