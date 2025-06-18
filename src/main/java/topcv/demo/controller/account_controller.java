@@ -21,7 +21,7 @@ import topcv.demo.service.account__service;
 public class account_controller {
 	@Autowired
 	private account__service account__service;
-	@GetMapping(value = {"/", ""})
+	@GetMapping("/")
     public String redirectToRegister() {
         return "redirect:/account/show_form_dangky";
     }

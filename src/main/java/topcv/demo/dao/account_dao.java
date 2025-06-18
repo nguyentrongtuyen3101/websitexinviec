@@ -25,4 +25,6 @@ public interface account_dao {
 	public void updatecompany( Company company);
 	public void createCV(CV cv);
 	public List<CV> getCV(User user);
+	public void deletecv(int id);
+	public void updateCVdefault(User user,int id);
 }

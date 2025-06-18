@@ -308,25 +308,39 @@ public class account_service_imp implements account__service{
 	 }
 	 @Override
 	 @Transactional
-	 public String luucvvaodb(CV cv,MultipartFile descriptionFile)
-	 {
-		 if (descriptionFile != null && !descriptionFile.isEmpty()) {
-	            String uploadResult = uploadDescriptionFile(descriptionFile, "fileName");
-	            if (uploadResult.startsWith("error:")) {
-	                return uploadResult; 
-	            }
-	            cv.setFileName(uploadResult);
-	        }
-		 try {
-			createCV(cv);
-			return"success";
-		} catch (Exception e) {
-			return"error";
-		}
+	 public String luucvvaodb(CV cv, MultipartFile descriptionFile) {
+	     if (descriptionFile != null && !descriptionFile.isEmpty()) {
+	         String uploadResult = uploadDescriptionFile(descriptionFile, "fileName");
+	         if (uploadResult.startsWith("error:")) {
+	             return uploadResult; 
+	         }
+	         cv.setFileName(uploadResult); // Gán tên file đã upload
+	     } else {
+	         return "error: Không có file CV được gửi lên!";
+	     }
+
+	     try {
+	         createCV(cv); // Lưu CV vào database
+	         return "success";
+	     } catch (Exception e) {
+	         return "error: Lỗi khi lưu CV vào database: " + e.getMessage();
+	     }
 	 }
 	 public List<CV> getCV(User user)
 	 {
 		 return account_dao.getCV(user);
+	 }
+	 @Override
+	 @Transactional
+	 public void deletecv(int id)
+	 {
+		 account_dao.deletecv(id);
+	 }
+	 @Override
+	 @Transactional
+	 public void updateCVdefault(User user,int id)
+	 {
+		 account_dao.updateCVdefault(user, id);
 	 }
 }
 

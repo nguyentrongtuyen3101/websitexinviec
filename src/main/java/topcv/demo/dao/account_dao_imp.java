@@ -139,4 +139,23 @@ public class account_dao_imp implements account_dao{
 		      theQuery.setParameter("user", user);
 		      return theQuery.getResultList();
 		}
+	 @Override
+	 @Transactional
+	 public void deletecv(int id)
+	 {
+		 Session session=sessionFactory.getCurrentSession();
+			Query query=session.createQuery("delete from CV where id=:id");
+			query.setParameter("id", id);
+			query.executeUpdate();
+	 }
+	 @Override
+	 @Transactional
+	 public void updateCVdefault(User user,int id)
+	 {
+		 Session session = sessionFactory.getCurrentSession();
+	        Query query = session.createQuery("UPDATE User SET cvId=:cvId WHERE email = :email");
+	        query.setParameter("cvId",id);
+	        query.setParameter("email", user.getEmail());
+	        query.executeUpdate(); 
+	 }
 }

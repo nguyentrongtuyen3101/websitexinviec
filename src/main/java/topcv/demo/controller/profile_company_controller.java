@@ -227,27 +227,77 @@ public class profile_company_controller {
         return "redirect:/profilecompany/showprofile_company";
     }
     @PostMapping("/uploadcv")
-    public String uploadcv(@ModelAttribute("CV") CV cv, Model model, HttpSession session,@RequestParam(value = "fileName", required = false) MultipartFile cvFile)
+    public String uploadcv(@RequestParam("userEmail") String userEmail,@RequestParam("fileName") MultipartFile cvFile,Model model,HttpSession session) {
+        String gmail = (String) session.getAttribute("userEmail");
+        System.out.println("userEmail in profile_company_controller: " + gmail); 
+        if (gmail == null) {
+            System.out.println("userEmail is null, redirecting to login page");
+            return "redirect:/account/show_form_dangnhap";
+        }
+
+        User user = account__service.timaccountbygmail(gmail);
+        if (user == null) {
+            model.addAttribute("error", "Không tìm thấy người dùng!");
+            return "redirect:/profilecompany/showprofile_company";
+        }
+
+        // Kiểm tra file
+        if (cvFile == null || cvFile.isEmpty()) {
+            model.addAttribute("error", "Vui lòng chọn một tệp CV!");
+            return "redirect:/profilecompany/showprofile_company";
+        }
+
+        // Kiểm tra định dạng file
+        String fileName = cvFile.getOriginalFilename();
+        String fileExt = fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase();
+        String[] validExts = {"pdf", "doc", "docx", "png", "jpg", "jpeg"};
+        if (!List.of(validExts).contains(fileExt)) {
+            model.addAttribute("error", "Định dạng tệp không hợp lệ! Chỉ chấp nhận .pdf, .doc, .docx, .png, .jpg, .jpeg.");
+            return "redirect:/profilecompany/showprofile_company";
+        }
+
+        CV cv = new CV();
+        cv.setUser(user);
+        String result = account__service.luucvvaodb(cv, cvFile);
+
+        if ("error".equals(result)) {
+            model.addAttribute("error", "Lưu CV thất bại !!!"); 
+        } else {
+            model.addAttribute("success", "Lưu CV thành công");
+        }
+        return "redirect:/profilecompany/showprofile_company";
+    }
+    @PostMapping("deleteCV")
+    public String xoacv(@RequestParam("idcv") int id,HttpSession session)
     {
-    	 String gmail = (String) session.getAttribute("userEmail");
-         System.out.println("userEmail in profile_company_controller: " + gmail); 
-         if (gmail == null) {
-             System.out.println("userEmail is null, redirecting to login page");
-             return "redirect:/account/show_form_dangnhap";
-         }
-         User user=account__service.timaccountbygmail(gmail);
-         if (user == null) {
-             return "error: Không tìm thấy người dùng!";
-         }
-         CV cv2=new CV();
-         cv2.setFileName(cv.getFileName());
-         cv2.setUser(user);
-         String result = account__service.luucvvaodb(cv2, cvFile);
-         if ("error".equals(result)) {
-             model.addAttribute("error", "Lưu CV thất bại !!!"); 
-         } else {
-             model.addAttribute("success", "Lưu CV thành công");
-         }
-         return "redirect:/profilecompany/showprofile_company";
+    	String gmail = (String) session.getAttribute("userEmail");
+        System.out.println("userEmail in profile_company_controller: " + gmail); 
+        if (gmail == null) {
+            System.out.println("userEmail is null, redirecting to login page");
+            return "redirect:/account/show_form_dangnhap";
+        }
+        User user=account__service.timaccountbygmail(gmail);
+        if (user == null) {
+            return "error: Không tìm thấy người dùng!";
+        }
+        if(user.getCvId()==id)account__service.updateCVdefault(user, 0);
+        account__service.deletecv(id);
+        return "redirect:/profilecompany/showprofile_company";
+    }
+    @PostMapping("updateCVdefault")
+    public String updatecvdefault(@RequestParam("idcv")int id,@ModelAttribute("user")User user,HttpSession session)
+    {
+    	String gmail = (String) session.getAttribute("userEmail");
+        System.out.println("userEmail in profile_company_controller: " + gmail); 
+        if (gmail == null) {
+            System.out.println("userEmail is null, redirecting to login page");
+            return "redirect:/account/show_form_dangnhap";
+        }
+        User user2=account__service.timaccountbygmail(gmail);
+        if (user == null) {
+            return "error: Không tìm thấy người dùng!";
+        }
+        else account__service.updateCVdefault(user2, id);
+        return "redirect:/profilecompany/showprofile_company";
     }
 }

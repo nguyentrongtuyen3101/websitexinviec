@@ -1,6 +1,10 @@
 package topcv.demo.entity;
 
+import java.util.Date;
+
 import javax.persistence.*;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "recruitments")
@@ -26,8 +30,8 @@ public class Recruitment {
     @Column(name = "quantity")
     private int quantity;
 
-    @Column(name = "rank")
-    private String rank;
+    @Column(name = "position")
+    private String position;
 
     @Column(name = "salary")
     private String salary;
@@ -53,7 +57,8 @@ public class Recruitment {
     private Category category;
 
     @Column(name = "deadline")
-    private String deadline;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date deadline;
 
     // Getters and Setters
     public int getId() {
@@ -104,12 +109,12 @@ public class Recruitment {
         this.quantity = quantity;
     }
 
-    public String getRank() {
-        return rank;
+    public String getPosition() {
+        return position;
     }
 
-    public void setRank(String rank) {
-        this.rank = rank;
+    public void setPosition(String position) {
+        this.position = position;
     }
 
     public String getSalary() {
@@ -168,11 +173,11 @@ public class Recruitment {
         this.category = category;
     }
 
-    public String getDeadline() {
+    public Date getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(String deadline) {
+    public void setDeadline(Date deadline) {
         this.deadline = deadline;
     }
 }

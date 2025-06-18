@@ -17,10 +17,6 @@ public class Category {
     @Column(name = "number_choose")
     private int numberChoose;
 
-    @ManyToOne
-    @JoinColumn(name = "company_id")
-    private Company company;
-
     // Getters and Setters
     public int getId() {
         return id;
@@ -46,11 +42,4 @@ public class Category {
         this.numberChoose = numberChoose;
     }
 
-    public Company getCompany() {
-        return company;
-    }
-
-    public void setCompany(Company company) {
-        this.company = company;
-    }
 }

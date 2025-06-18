@@ -40,9 +40,6 @@ public class Company {
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<FollowCompany> followCompanies;
 
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
-    private List<Category> categories;
-
     // Getters and Setters
     public int getId() {
         return id;
@@ -122,13 +119,5 @@ public class Company {
 
     public void setFollowCompanies(List<FollowCompany> followCompanies) {
         this.followCompanies = followCompanies;
-    }
-
-    public List<Category> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
     }
 }

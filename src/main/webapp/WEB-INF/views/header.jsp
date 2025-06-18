@@ -29,7 +29,7 @@
                 </li>
                 <c:if test="${user.roleName== 'COMPANY'}">
                     <li class="nav-item">
-                    <a class="nav-link ${pageContext.request.requestURI eq '/post-job' ? 'active' : ''}" href="${pageContext.request.contextPath}/post-job">Đăng tuyển</a>
+                    <a class="nav-link ${pageContext.request.requestURI eq '/post-job' ? 'active' : ''}" href="${pageContext.request.contextPath}/dangtuyen/show_page_dangtuyen">Đăng tuyển</a>
                 </li>
                 </c:if>
             </ul>
@@ -51,7 +51,9 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <li><a class="dropdown-item ${pageContext.request.requestURI eq '/profilecompany/showprofile_company' ? 'active' : ''}" href="${pageContext.request.contextPath}/profilecompany/showprofile_company">Hồ sơ</a></li>
-                                <li><a class="dropdown-item ${pageContext.request.requestURI eq '/posted-jobs' ? 'active' : ''}" href="${pageContext.request.contextPath}/posted-jobs">Danh sách bài đăng</a></li>
+                                <c:if test="${user.roleName== 'COMPANY'}">
+                                	<li><a class="dropdown-item ${pageContext.request.requestURI eq '/posted-jobs' ? 'active' : ''}" href="${pageContext.request.contextPath}/dangtuyen/showformlistbaidang">Danh sách bài đăng</a></li>
+                                </c:if>
                                 <li><a class="dropdown-item ${pageContext.request.requestURI eq '/account/logout' ? 'active' : ''}" href="${pageContext.request.contextPath}/account/logout">Đăng xuất</a></li>
                             </ul>
                         </div>
