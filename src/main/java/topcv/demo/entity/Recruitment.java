@@ -55,6 +55,9 @@ public class Recruitment {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
 
     @Column(name = "deadline")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -164,7 +167,14 @@ public class Recruitment {
     public void setUser(User user) {
         this.user = user;
     }
+    
+    public Company getCompany() {
+        return company;
+    }
 
+    public void setCompany(Company company) {
+        this.company = company;
+    }
     public Category getCategory() {
         return category;
     }

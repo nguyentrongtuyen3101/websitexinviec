@@ -59,6 +59,7 @@ public class dangtuyen_controller {
         if (user == null ||!"COMPANY".equals(user.getRoleName().toString())) {
         	return "redirect:/account/show_form_dangnhap";
         }
+        Company company=account__service.timcompanybyuserid(user);
         Category category=dangtuyen_service.getCategory(categoryId);
         Recruitment recruitment2=recruitment;
         recruitment2.setTitle(recruitment.getTitle());
@@ -73,6 +74,7 @@ public class dangtuyen_controller {
         recruitment2.setStatus(0);
         recruitment2.setUser(user);
         recruitment2.setCategory(category);
+        recruitment2.setCompany(company);
         dangtuyen_service.cereatebaidang(recruitment2);
         return"redirect:/dangtuyen/showformlistbaidang";
 	}
@@ -138,11 +140,14 @@ public class dangtuyen_controller {
         if (user == null ||!"COMPANY".equals(user.getRoleName().toString())) {
         	return "redirect:/account/show_form_dangnhap";
         }
+        Company company=account__service.timcompanybyuserid(user);
 		Recruitment recruitment=dangtuyen_service.timRecruitmentbyid(id);
 		model.addAttribute("recruitment", recruitment);
 		List<Category> listcCategories=dangtuyen_service.getcategory();
 		model.addAttribute("listcCategories", listcCategories);
 		model.addAttribute("user", user);
+		model.addAttribute("company", company);
 		return"dangtuyenform";
 	}
+	
 }

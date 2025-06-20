@@ -2,6 +2,7 @@ package topcv.demo.service;
 
 import java.util.List;
 import topcv.demo.entity.Category;
+import topcv.demo.entity.Company;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -56,5 +57,29 @@ public class dangtuyen_service_imp implements dangtuyen_service{
 	public Recruitment timRecruitmentbyid(int id)
 	{
 		return dangtuyen_dao.timRecruitmentbyid(id);
+	}
+	@Override
+	@Transactional
+	public void updatenumberChoose(int id,int numberChoose)
+	{
+		dangtuyen_dao.updatenumberChoose(id, numberChoose);
+	}
+	@Override
+	@Transactional
+	public List<Recruitment> getlisstRecruitments(String keyword,int page, int size,String type,Category category,String giatritimkiem,Company company)
+	{
+		return dangtuyen_dao.getlisstRecruitments(keyword, page, size, type, category,giatritimkiem,company);
+	}
+	@Override
+	@Transactional
+	public long getTotalRecruitmentsdk(String keyword,String type,Category category,String giatritimkiem,Company company)
+	{
+		return dangtuyen_dao.getTotalRecruitmentsdk(keyword, type, category,giatritimkiem,company);
+	}
+	@Override
+	@Transactional
+	public Company timCompanybynamecompany(String namecompany)
+	{
+		return dangtuyen_dao.timCompanybynamecompany(namecompany);
 	}
 }
