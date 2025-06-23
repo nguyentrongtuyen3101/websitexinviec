@@ -33,5 +33,8 @@ public interface account__service {
 	public String luucvvaodb(CV cv,MultipartFile descriptionFile);
 	public List<CV> getCV(User user);
 	public void deletecv(int id);
-	public void updateCVdefault(User user,int id);
+	public void updateCVdefault(User user,CV cv);
+	public CV timCvbyid(Integer id);
+	public CV getidcvmoinhat(User user);
+	public CV timcvbyfilenamr(String fileName);
 }

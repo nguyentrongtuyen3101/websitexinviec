@@ -1,5 +1,6 @@
 package topcv.demo.controller;
 import java.security.PublicKey;
+//import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -13,6 +14,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import topcv.demo.entity.ApplyPost;
+import topcv.demo.entity.CV;
 import topcv.demo.entity.Category;
 import topcv.demo.entity.Company;
 import topcv.demo.entity.Recruitment;
@@ -148,6 +153,126 @@ public class dangtuyen_controller {
 		model.addAttribute("user", user);
 		model.addAttribute("company", company);
 		return"dangtuyenform";
+	}
+	@GetMapping("/showformapplyspost")
+	public String showformappltypage(@RequestParam("recruitmentsId") int id,HttpSession session,Model model)
+	{
+		String gmail = (String) session.getAttribute("userEmail");
+        System.out.println("userEmail in profile_company_controller: " + gmail); 
+        if (gmail == null) {
+            System.out.println("userEmail is null, redirecting to login page");
+            return "redirect:/account/show_form_dangnhap";
+        }
+        User user=account__service.timaccountbygmail(gmail);
+        if (user == null) {
+        	return "redirect:/account/show_form_dangky";
+        }
+        Recruitment recruitment=dangtuyen_service.timRecruitmentbyid(id);
+        if(recruitment==null)
+        {
+        	model.addAttribute("error", "Khong co bai dang tuyen dung nay");
+        	return "redirect:/home/show_home";
+        }
+        boolean hasApplied = dangtuyen_service.timApplyPostbybyuserandrecruirement(user, id) != null;
+        model.addAttribute("hasApplied", hasApplied);
+        model.addAttribute("user",user);
+        model.addAttribute("recruitments",recruitment);
+        model.addAttribute("applyPost",new ApplyPost());
+        return"formApplyPost";
+	}
+	@PostMapping("applypostaction")
+	public String applyPostaction(@ModelAttribute("applyPost") ApplyPost applyPost,@RequestParam("recruitmentsId") int recruitmentID,@RequestParam("chouseCV") boolean chouseCV,Model model,HttpSession session,@RequestParam("fileName") MultipartFile cvFile)
+	{
+		String gmail = (String) session.getAttribute("userEmail");
+        System.out.println("userEmail in profile_company_controller: " + gmail); 
+        if (gmail == null) {
+            System.out.println("userEmail is null, redirecting to login page");
+            return "redirect:/account/show_form_dangnhap";
+        }
+        User user2=account__service.timaccountbygmail(gmail);
+        if (user2 == null) {
+            System.out.println("userEmail is null, redirecting to login page");
+            return "redirect:/account/show_form_dangky";
+        }
+        CV cv=null;
+        ApplyPost applyPost2=applyPost;
+        applyPost2.setCreatedAt(applyPost.getCreatedAt());
+        if(chouseCV)
+        {
+        	if (user2.getCv()==null) {
+				model.addAttribute("failCV", "Bạn chưa chọn cv mạc định hoặc chưa có cv !!!");
+				return"redirect:/dangtuyen/showformapplyspost?recruitmentsId="+recruitmentID;
+			}
+        	cv=account__service.timCvbyid(user2.getCv().getId());
+        	applyPost2.setNameCv(cv.getFileName());
+        }
+        else {
+	        if (cvFile == null || cvFile.isEmpty()) {
+	            model.addAttribute("error", "Vui lòng chọn một tệp CV!");
+	            return"redirect:/dangtuyen/showformapplyspost?recruitmentsId="+recruitmentID;
+	        }
+	        String fileName = cvFile.getOriginalFilename();
+	        String fileExt = fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase();
+	        String[] validExts = {"pdf", "doc", "docx", "png", "jpg", "jpeg"};
+	        if (!List.of(validExts).contains(fileExt)) {
+	            model.addAttribute("error", "Định dạng tệp không hợp lệ! Chỉ chấp nhận .pdf, .doc, .docx, .png, .jpg, .jpeg.");
+	            return"redirect:/dangtuyen/showformapplyspost?recruitmentsId="+recruitmentID;
+	        }
+	        CV cv2=new CV();
+	        cv2.setUser(user2);
+	        String result=account__service.luucvvaodb(cv2, cvFile);
+	        if ("error".equals(result)) {
+	            model.addAttribute("error", "Upload Cv that bai"); 
+	        } else {
+	            account__service.updateCVdefault(user2, account__service.getidcvmoinhat(user2));
+	        }
+        	applyPost2.setNameCv(fileName);
+		}
+        applyPost2.setRecruitmentId(recruitmentID);
+        applyPost2.setStatus(0);
+        applyPost2.setText(applyPost.getText());
+        applyPost2.setUser(user2);
+        String createapplypoString=dangtuyen_service.createApplyPost(applyPost2);
+        if("welldone".equals(createapplypoString))model.addAttribute("welldone", "Bạn đã ứng tuyển thành công");
+        else model.addAttribute("fail","Ứng tuyển công việc thất bại !!!");
+        return"redirect:/dangtuyen/showformapplyspost?recruitmentsId="+recruitmentID;
+	}
+	@PostMapping("/deleteapplypost")
+	public String deleteapplypost(@RequestParam("recruitmentsId") int id,HttpSession session,Model model)
+	{
+		String gmail = (String) session.getAttribute("userEmail");
+        System.out.println("userEmail in profile_company_controller: " + gmail); 
+        if (gmail == null) {
+            System.out.println("userEmail is null, redirecting to login page");
+            return "redirect:/account/show_form_dangnhap";
+        }
+        User user2=account__service.timaccountbygmail(gmail);
+        if (user2 == null) {
+            System.out.println("userEmail is null, redirecting to login page");
+            return "redirect:/account/show_form_dangky";
+        }
+        dangtuyen_service.deleteapplypost(user2, id);
+        return"redirect:/dangtuyen/showformapplyspost?recruitmentsId="+id;
+	}
+	@GetMapping("/showformchitietbaidang")
+	public String showformchitietbaidang(Model model,HttpSession session,@RequestParam("recruitmentsId")int recruitmentsId)
+	{
+		String gmail = (String) session.getAttribute("userEmail");
+        System.out.println("userEmail in profile_company_controller: " + gmail); 
+        if (gmail == null) {
+            System.out.println("userEmail is null, redirecting to login page");
+            return "redirect:/account/show_form_dangnhap";
+        }
+        User user=account__service.timaccountbygmail(gmail);
+        if (user == null ||!"COMPANY".equals(user.getRoleName().toString())) {
+        	return "redirect:/account/show_form_dangnhap";
+        }
+        Recruitment recruitment=dangtuyen_service.timRecruitmentbyid(recruitmentsId);
+        List<ApplyPost> listaApplyPosts=dangtuyen_service.getlisstapplipostbyrecruirement(recruitmentsId);
+        model.addAttribute("recruitment",recruitment);
+        model.addAttribute("listaApplyPosts",listaApplyPosts);
+        model.addAttribute("user",user);
+        return "chitietbaodang";
 	}
 	
 }

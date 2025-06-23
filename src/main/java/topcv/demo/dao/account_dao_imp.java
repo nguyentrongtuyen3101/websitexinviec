@@ -150,12 +150,40 @@ public class account_dao_imp implements account_dao{
 	 }
 	 @Override
 	 @Transactional
-	 public void updateCVdefault(User user,int id)
+	 public void updateCVdefault(User user,CV cv)
 	 {
 		 Session session = sessionFactory.getCurrentSession();
-	        Query query = session.createQuery("UPDATE User SET cvId=:cvId WHERE email = :email");
-	        query.setParameter("cvId",id);
+	        Query query = session.createQuery("UPDATE User SET cv=:cv WHERE email = :email");
+	        query.setParameter("cv",cv);
 	        query.setParameter("email", user.getEmail());
 	        query.executeUpdate(); 
+	 }
+	 @Override
+	 @Transactional
+	 public CV timCvbyid(Integer id)
+	 {
+		 Session session=sessionFactory.getCurrentSession();
+		 Query<CV> theQuery=session.createQuery("from CV where id=:id",CV.class);
+		 theQuery.setParameter("id", id);
+		 return theQuery.uniqueResult();
+	 }
+	 @Override
+	 @Transactional
+	 public CV getidcvmoinhat(User user)
+	 {
+		 Session session=sessionFactory.getCurrentSession();
+		 Query<CV> theQuery=session.createQuery("from CV where user=:user ORDER BY id DESC",CV.class);
+		 theQuery.setParameter("user", user);
+		 theQuery.setMaxResults(1); 
+		 return theQuery.uniqueResult();
+	 }
+	 @Override
+	 @Transactional
+	 public CV timcvbyfilenamr(String fileName)
+	 {
+		 Session session=sessionFactory.getCurrentSession();
+		 Query<CV> theQuery=session.createQuery("from CV where fileName=:fileName",CV.class);
+		 theQuery.setParameter("fileName", fileName);
+		 return theQuery.uniqueResult();
 	 }
 }

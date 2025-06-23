@@ -409,7 +409,7 @@
 			                        </td>
 			                        <td>
 			                            <c:choose>
-			                                <c:when test="${user.cvId != null && user.cvId == cv.id}">
+			                                <c:when test="${user.cv != null && user.cv.id == cv.id}">
 			                                    <span style="color: #28a745; font-weight: bold;">Default</span>
 			                                </c:when>
 			                                <c:otherwise>

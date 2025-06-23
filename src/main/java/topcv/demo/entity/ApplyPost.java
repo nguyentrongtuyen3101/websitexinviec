@@ -1,6 +1,10 @@
 package topcv.demo.entity;
 
+import java.util.Date;
+
 import javax.persistence.*;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "applications")
@@ -12,13 +16,11 @@ public class ApplyPost {
     private int id;
 
     @Column(name = "created_at")
-    private String createdAt;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date createdAt;
 
     @Column(name = "recruitment_id")
     private int recruitmentId;
-
-    @Column(name = "user_id")
-    private int userId;
 
     @Column(name = "name_cv")
     private String nameCv;
@@ -30,7 +32,7 @@ public class ApplyPost {
     private String text;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     // Getters and Setters
@@ -42,11 +44,11 @@ public class ApplyPost {
         this.id = id;
     }
 
-    public String getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -56,14 +58,6 @@ public class ApplyPost {
 
     public void setRecruitmentId(int recruitmentId) {
         this.recruitmentId = recruitmentId;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public String getNameCv() {

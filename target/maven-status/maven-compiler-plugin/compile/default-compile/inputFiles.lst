@@ -6,6 +6,8 @@ C:\Users\admin\Downloads\PRJ321x_Project2_tuyenntFX52622\src\main\java\topcv\dem
 C:\Users\admin\Downloads\PRJ321x_Project2_tuyenntFX52622\src\main\java\topcv\demo\dao\package-info.java
 C:\Users\admin\Downloads\PRJ321x_Project2_tuyenntFX52622\src\main\java\topcv\demo\config\dataconfig.java
 C:\Users\admin\Downloads\PRJ321x_Project2_tuyenntFX52622\src\main\java\topcv\demo\entity\FollowCompany.java
+C:\Users\admin\Downloads\PRJ321x_Project2_tuyenntFX52622\src\main\java\topcv\demo\service\dangtuyen_service_imp.java
+C:\Users\admin\Downloads\PRJ321x_Project2_tuyenntFX52622\src\main\java\topcv\demo\controller\dangtuyen_controller.java
 C:\Users\admin\Downloads\PRJ321x_Project2_tuyenntFX52622\src\main\java\topcv\demo\entity\package-info.java
 C:\Users\admin\Downloads\PRJ321x_Project2_tuyenntFX52622\src\main\java\topcv\demo\service\account__service.java
 C:\Users\admin\Downloads\PRJ321x_Project2_tuyenntFX52622\src\main\java\topcv\demo\config\package-info.java
@@ -17,7 +19,10 @@ C:\Users\admin\Downloads\PRJ321x_Project2_tuyenntFX52622\src\main\java\topcv\dem
 C:\Users\admin\Downloads\PRJ321x_Project2_tuyenntFX52622\src\main\java\topcv\demo\controller\home_controller.java
 C:\Users\admin\Downloads\PRJ321x_Project2_tuyenntFX52622\src\main\java\topcv\demo\service\account_service_imp.java
 C:\Users\admin\Downloads\PRJ321x_Project2_tuyenntFX52622\src\main\java\topcv\demo\controller\package-info.java
+C:\Users\admin\Downloads\PRJ321x_Project2_tuyenntFX52622\src\main\java\topcv\demo\service\dangtuyen_service.java
+C:\Users\admin\Downloads\PRJ321x_Project2_tuyenntFX52622\src\main\java\topcv\demo\dao\dangtuyen_dao.java
 C:\Users\admin\Downloads\PRJ321x_Project2_tuyenntFX52622\src\main\java\topcv\demo\entity\SaveJob.java
+C:\Users\admin\Downloads\PRJ321x_Project2_tuyenntFX52622\src\main\java\topcv\demo\dao\dangtuyen_dao_imp.java
 C:\Users\admin\Downloads\PRJ321x_Project2_tuyenntFX52622\src\main\java\topcv\demo\controller\account_controller.java
 C:\Users\admin\Downloads\PRJ321x_Project2_tuyenntFX52622\src\main\java\topcv\demo\testdb\TestDbController.java
 C:\Users\admin\Downloads\PRJ321x_Project2_tuyenntFX52622\src\main\java\topcv\demo\controller\profile_company_controller.java

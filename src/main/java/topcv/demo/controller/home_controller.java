@@ -1,12 +1,10 @@
 package topcv.demo.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.hibernate.validator.internal.util.privilegedactions.NewInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,12 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import topcv.demo.entity.Category;
 import topcv.demo.entity.Company;
 import topcv.demo.entity.Recruitment;
-import topcv.demo.entity.User;
 import topcv.demo.service.account__service;
 import topcv.demo.service.dangtuyen_service;
-
 @Controller
-@RequestMapping("home")
+@RequestMapping("/home")
 public class home_controller {
 	@Autowired
 	private account__service account__service;
@@ -48,7 +44,7 @@ public class home_controller {
 			@RequestParam("typeselect") String typeselect)
 	{
 		int pageSize = 5;
-		List<Recruitment> listrecruitments=new ArrayList<>();
+		List<Recruitment> listrecruitments=null;
 		long totalRecruitments=0;
 		Company company=null;
 		Category category=dangtuyen_service.getCategory(categoryId);

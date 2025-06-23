@@ -338,9 +338,27 @@ public class account_service_imp implements account__service{
 	 }
 	 @Override
 	 @Transactional
-	 public void updateCVdefault(User user,int id)
+	 public void updateCVdefault(User user,CV cv)
 	 {
-		 account_dao.updateCVdefault(user, id);
+		 account_dao.updateCVdefault(user, cv);
+	 }
+	 @Override
+	 @Transactional
+	 public CV timCvbyid(Integer id)
+	 {
+		 return account_dao.timCvbyid(id);
+	 }
+	 @Override
+	 @Transactional
+	 public CV getidcvmoinhat(User user)
+	 {
+		 return account_dao.getidcvmoinhat(user);
+	 }
+	 @Override
+	 @Transactional
+	 public CV timcvbyfilenamr(String fileName)
+	 {
+		 return account_dao.timcvbyfilenamr(fileName);
 	 }
 }
 

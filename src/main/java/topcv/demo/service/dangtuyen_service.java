@@ -1,6 +1,8 @@
 package topcv.demo.service;
 
 import java.util.List;
+
+import topcv.demo.entity.ApplyPost;
 import topcv.demo.entity.Category;
 import topcv.demo.entity.Company;
 
@@ -22,4 +24,8 @@ public interface dangtuyen_service {
 	public List<Recruitment> getlisstRecruitments(String keyword,int page, int size,String type,Category category,String giatritimkiem,Company company);
 	public long getTotalRecruitmentsdk(String keyword,String type,Category category,String giatritimkiem,Company company);
 	public Company timCompanybynamecompany(String namecompany);
+	public String createApplyPost(ApplyPost applyPost);
+	public ApplyPost timApplyPostbybyuserandrecruirement(User user,int idrecruirement);
+	public void deleteapplypost(User user,int recuirementid);
+	public List<ApplyPost> getlisstapplipostbyrecruirement(int recuirementid);
 }

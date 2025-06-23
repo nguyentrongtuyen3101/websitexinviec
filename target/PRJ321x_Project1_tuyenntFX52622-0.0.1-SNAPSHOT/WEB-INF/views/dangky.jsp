@@ -132,7 +132,7 @@
 
             <!-- Nút đăng ký và quay lại -->
             <button type="submit" class="btn btn-primary mb-2">Đăng ký</button>
-            <a href="${pageContext.request.contextPath}/home" class="btn btn-secondary">Back to Home</a>
+            <a href="${pageContext.request.contextPath}/home/show_home" class="btn btn-secondary">Back to Home</a>
         </form>
 
         <!-- Liên kết đăng nhập -->

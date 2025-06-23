@@ -11,6 +11,8 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import topcv.demo.entity.ApplyPost;
 import topcv.demo.entity.CV;
 import topcv.demo.entity.Recruitment;
 import topcv.demo.entity.User;
@@ -142,4 +144,42 @@ public class dangtuyen_dao_imp implements dangtuyen_dao{
          return query.uniqueResult();
          
 	 }
+	 @Override
+	 @Transactional
+	 public String createApplyPost(ApplyPost applyPost)
+	 {
+		 
+			 Session session =sessionFactory.getCurrentSession();
+			 session.saveOrUpdate(applyPost);
+			 return"welldone";
+	 }
+	 @Override
+	 @Transactional
+	 public ApplyPost timApplyPostbybyuserandrecruirement(User user,int idrecruirement)
+	 {
+		 Session session = sessionFactory.getCurrentSession();
+         Query<ApplyPost> query = session.createQuery("FROM ApplyPost WHERE user=:user and recruitmentId=:recruitmentId", ApplyPost.class);
+         query.setParameter("user",user);
+         query.setParameter("recruitmentId", idrecruirement);
+         return query.uniqueResult();
+	 }
+	 @Override
+	 @Transactional
+	 public void deleteapplypost(User user,int recuirementid)
+	 {
+		 Session session=sessionFactory.getCurrentSession();
+			Query query=session.createQuery("delete from ApplyPost where user=:user and recruitmentId=:recruitmentId");
+			query.setParameter("user", user);
+			query.setParameter("recruitmentId", recuirementid);
+			query.executeUpdate();
+	 }
+	 @Override
+	 @Transactional
+	 public List<ApplyPost> getlisstapplipostbyrecruirement(int recuirementid)
+		{
+			 Session currentSession = sessionFactory.getCurrentSession();
+		      Query<ApplyPost> theQuery = currentSession.createQuery("from ApplyPost where recruitmentId=:recruitmentId ORDER BY id DESC", ApplyPost.class);
+		      theQuery.setParameter("recruitmentId", recuirementid);
+		      return theQuery.getResultList();
+		}
 }

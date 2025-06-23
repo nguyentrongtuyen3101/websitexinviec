@@ -147,7 +147,7 @@
                                     <p class="expired-text">Hết hạn</p>
                                 </c:when>
                                 <c:otherwise>
-                                    <a href="${pageContext.request.contextPath}/apply?recruitmentId=${recruitment.id}" class="btn btn-primary apply-btn">Apply</a>
+                                    <a href="${pageContext.request.contextPath}/dangtuyen/showformapplyspost?recruitmentsId=${recruitment.id}" class="btn btn-primary apply-btn">Apply</a>
                                 </c:otherwise>
                             </c:choose>
                         </div>

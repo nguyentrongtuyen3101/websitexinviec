@@ -1,6 +1,8 @@
 package topcv.demo.service;
 
 import java.util.List;
+
+import topcv.demo.entity.ApplyPost;
 import topcv.demo.entity.Category;
 import topcv.demo.entity.Company;
 
@@ -82,4 +84,29 @@ public class dangtuyen_service_imp implements dangtuyen_service{
 	{
 		return dangtuyen_dao.timCompanybynamecompany(namecompany);
 	}
+	@Override
+	@Transactional
+	public String createApplyPost(ApplyPost applyPost)
+	{
+		 return dangtuyen_dao.createApplyPost(applyPost);
+	}
+	@Override
+	@Transactional
+	public ApplyPost timApplyPostbybyuserandrecruirement(User user,int idrecruirement)
+	{
+		return dangtuyen_dao.timApplyPostbybyuserandrecruirement(user, idrecruirement);
+	}
+	@Override
+	@Transactional
+	public void deleteapplypost(User user,int recuirementid)
+	{
+		dangtuyen_dao.deleteapplypost(user, recuirementid);
+	}
+	@Override
+	@Transactional
+	public List<ApplyPost> getlisstapplipostbyrecruirement(int recuirementid)
+	{
+		return dangtuyen_dao.getlisstapplipostbyrecruirement(recuirementid);
+	}
+	
 }

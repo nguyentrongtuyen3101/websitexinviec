@@ -178,7 +178,7 @@
                                     </c:choose>
                                 </td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/dangtuyen/chitietbaidang?id=${recruitment.id}" class="btn action-btn detail-btn">Chi tiết</a>
+                                    <a href="${pageContext.request.contextPath}/dangtuyen/showformchitietbaidang?recruitmentsId=${recruitment.id}" class="btn action-btn detail-btn">Chi tiết</a>
                                     <a href="${pageContext.request.contextPath}/dangtuyen/showformupdate?idbaidang=${recruitment.id}" class="btn action-btn update-btn">Cập nhật</a>
                                     <form action="${pageContext.request.contextPath}/dangtuyen/deletebaidang" method="post" style="display:inline;">
                                         <input type="hidden" name="idbaidang" value="${recruitment.id}">

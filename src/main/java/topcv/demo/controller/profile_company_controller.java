@@ -267,7 +267,7 @@ public class profile_company_controller {
         }
         return "redirect:/profilecompany/showprofile_company";
     }
-    @PostMapping("deleteCV")
+    @PostMapping("/deleteCV")
     public String xoacv(@RequestParam("idcv") int id,HttpSession session)
     {
     	String gmail = (String) session.getAttribute("userEmail");
@@ -280,11 +280,11 @@ public class profile_company_controller {
         if (user == null) {
             return "error: Không tìm thấy người dùng!";
         }
-        if(user.getCvId()==id)account__service.updateCVdefault(user, 0);
+        if(user.getCv().getId()==id)account__service.updateCVdefault(user, null);
         account__service.deletecv(id);
         return "redirect:/profilecompany/showprofile_company";
     }
-    @PostMapping("updateCVdefault")
+    @PostMapping("/updateCVdefault")
     public String updatecvdefault(@RequestParam("idcv")int id,@ModelAttribute("user")User user,HttpSession session)
     {
     	String gmail = (String) session.getAttribute("userEmail");
@@ -297,7 +297,7 @@ public class profile_company_controller {
         if (user == null) {
             return "error: Không tìm thấy người dùng!";
         }
-        else account__service.updateCVdefault(user2, id);
+        else account__service.updateCVdefault(user2, account__service.timCvbyid(id));
         return "redirect:/profilecompany/showprofile_company";
     }
 }

@@ -46,8 +46,9 @@ public class User {
     @Column(name = "role_name")
     private Role roleName; 
 
-    @Column(name = "cv_id")
-    private Integer cvId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "default_cv_id", referencedColumnName = "id")
+    private CV cv;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<CV> cvs;
@@ -145,12 +146,12 @@ public class User {
         this.roleName = roleName;
     }
 
-    public Integer getCvId() {
-        return cvId;
+    public CV getCv() {
+        return cv;
     }
 
-    public void setCvId(Integer cvId) {
-        this.cvId = cvId;
+    public void setCv(CV cv) {
+        this.cv = cv;
     }
 
     public List<CV> getCvs() {
