@@ -5,6 +5,7 @@ import java.util.List;
 import topcv.demo.entity.ApplyPost;
 import topcv.demo.entity.Category;
 import topcv.demo.entity.Company;
+import topcv.demo.entity.FollowCompany;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import topcv.demo.dao.dangtuyen_dao;
 import topcv.demo.entity.Recruitment;
+import topcv.demo.entity.SaveJob;
 import topcv.demo.entity.User;
 
 @Repository
@@ -108,5 +110,38 @@ public class dangtuyen_service_imp implements dangtuyen_service{
 	{
 		return dangtuyen_dao.getlisstapplipostbyrecruirement(recuirementid);
 	}
-	
+	@Override
+	@Transactional
+	public void savejob(SaveJob saveJob)
+	{
+		dangtuyen_dao.savejob(saveJob);
+	}
+	@Override
+	@Transactional
+	public SaveJob timjobbyuserandidrecruirement(User user,int idrecruirement)
+	{
+		return dangtuyen_dao.timjobbyuserandidrecruirement(user, idrecruirement);
+	}
+	public void deleteSaveJob(User user, int recruitmentId)
+	{
+		dangtuyen_dao.deleteSaveJob(user, recruitmentId);
+	}
+	@Override
+	@Transactional
+	public void folowcompany(FollowCompany followCompany)
+	{
+		dangtuyen_dao.folowcompany(followCompany);
+	}
+	@Override
+	@Transactional
+	public FollowCompany timFollowCompanybyuserandidrecruirement(User user,int companyId)
+	{
+		return dangtuyen_dao.timFollowCompanybyuserandidrecruirement(user, companyId);
+	}
+	@Override
+	@Transactional
+	public void deleteFollowCompany(User user, int companyId)
+	{
+		dangtuyen_dao.deleteFollowCompany(user, companyId);
+	}
 }

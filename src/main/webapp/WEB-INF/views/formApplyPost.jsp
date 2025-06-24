@@ -149,6 +149,18 @@
                         <img src="${pageContext.request.contextPath}/resources/images/default-logo.jpg" alt="Logo công ty">
                     </c:if>
                 </div>
+                <c:if test="${isfollow}">
+                	<form id="formfollow" action="${pageContext.request.contextPath}/dangtuyen/deletefollow" method="post" enctype="multipart/form-data" >
+                		<input type="hidden" name="recruitmentsId" value="${recruitments.id}">
+                		<button type="submit" class="btn btn-primary apply-btn">Unfollow</button>
+                	</form>
+                </c:if>
+                <c:if test="${!isfollow}">
+                	<form id="formfollow" action="${pageContext.request.contextPath}/dangtuyen/followcompany" method="post" enctype="multipart/form-data" >
+                		<input type="hidden" name="recruitmentsId" value="${recruitments.id}">
+                		<button type="submit" class="btn btn-primary apply-btn">follow</button>
+                	</form>
+                </c:if>
                 <div class="job-info">
                     <p><strong>Tiêu đề:</strong> ${recruitments.title}</p>
                     <p><strong>Mô tả:</strong> ${recruitments.description}</p>

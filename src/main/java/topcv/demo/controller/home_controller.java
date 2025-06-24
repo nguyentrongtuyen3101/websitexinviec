@@ -1,7 +1,9 @@
 package topcv.demo.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import topcv.demo.entity.Category;
 import topcv.demo.entity.Company;
 import topcv.demo.entity.Recruitment;
+import topcv.demo.entity.SaveJob;
+import topcv.demo.entity.User;
 import topcv.demo.service.account__service;
 import topcv.demo.service.dangtuyen_service;
 @Controller
@@ -41,13 +45,15 @@ public class home_controller {
 	@GetMapping("/timkiemlob")
 	public String timkiemjob(@ModelAttribute("recruitment") Recruitment recruitment,@RequestParam("categoryid") int categoryId,Model model,
 			@RequestParam("textinput") String textinput,@RequestParam("chouse") int chouse,@RequestParam(value = "page", defaultValue = "0") int page,
-			@RequestParam("typeselect") String typeselect)
+			@RequestParam("typeselect") String typeselect,HttpSession session)
 	{
 		int pageSize = 5;
 		List<Recruitment> listrecruitments=null;
 		long totalRecruitments=0;
 		Company company=null;
 		Category category=dangtuyen_service.getCategory(categoryId);
+		String gmail = (String) session.getAttribute("userEmail");
+	    User user = account__service.timaccountbygmail(gmail);
 		if(chouse==1)
 		{
 			 listrecruitments=dangtuyen_service.getlisstRecruitments("title", page, pageSize, typeselect, category,textinput,company);
@@ -81,6 +87,22 @@ public class home_controller {
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("totalRecruitments", totalRecruitments);
         model.addAttribute("now", new Date()); 
-		return "home";
+        model.addAttribute("user", user);
+        model.addAttribute("chouse", chouse); 
+        model.addAttribute("textinput", textinput); 
+        model.addAttribute("categoryid", categoryId); 
+        model.addAttribute("typeselect", typeselect);
+
+        
+        if (user != null && listrecruitments != null) {
+            Map<Integer, Boolean> saveStatusMap = new HashMap<>();
+            for (Recruitment rec : listrecruitments) {
+                SaveJob savedJob = dangtuyen_service.timjobbyuserandidrecruirement(user, rec.getId());
+                saveStatusMap.put(rec.getId(), savedJob != null);
+            }
+            model.addAttribute("saveStatusMap", saveStatusMap);
+        }
+        return "home";
 	}
 }
+

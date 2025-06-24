@@ -1,9 +1,11 @@
 package topcv.demo.dao;
 
+import java.sql.Savepoint;
 import java.util.Collections;
 import java.util.List;
 import topcv.demo.entity.Category;
 import topcv.demo.entity.Company;
+import topcv.demo.entity.FollowCompany;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import topcv.demo.entity.ApplyPost;
 import topcv.demo.entity.CV;
 import topcv.demo.entity.Recruitment;
+import topcv.demo.entity.SaveJob;
 import topcv.demo.entity.User;
 
 @Repository
@@ -182,4 +185,57 @@ public class dangtuyen_dao_imp implements dangtuyen_dao{
 		      theQuery.setParameter("recruitmentId", recuirementid);
 		      return theQuery.getResultList();
 		}
+	 @Override
+	 @Transactional
+	 public void savejob(SaveJob saveJob)
+	 {
+		 Session session=sessionFactory.getCurrentSession();
+		 session.saveOrUpdate(saveJob);
+	 }
+	 @Override
+	 @Transactional
+	 public SaveJob timjobbyuserandidrecruirement(User user,int idrecruirement)
+	 {
+		 Session currentSession = sessionFactory.getCurrentSession();
+	      Query<SaveJob> theQuery = currentSession.createQuery("from SaveJob where recruitmentId=:recruitmentId and user=:user", SaveJob.class);
+	      theQuery.setParameter("recruitmentId", idrecruirement);
+	      theQuery.setParameter("user", user);
+	      return theQuery.uniqueResult();
+	 }
+	 @Override
+	 @Transactional
+	 public void deleteSaveJob(User user, int recruitmentId) {
+	     Session session = sessionFactory.getCurrentSession();
+	     Query query = session.createQuery("delete from SaveJob where user=:user and recruitmentId=:recruitmentId");
+	     query.setParameter("user", user);
+	     query.setParameter("recruitmentId", recruitmentId);
+	     query.executeUpdate();
+	 }
+	 @Override
+	 @Transactional
+	 public void folowcompany(FollowCompany followCompany)
+	 {
+		 Session session=sessionFactory.getCurrentSession();
+		 session.saveOrUpdate(followCompany);
+	 }
+	 @Override
+	 @Transactional
+	 public FollowCompany timFollowCompanybyuserandidrecruirement(User user,int companyId)
+	 {
+		 Session currentSession = sessionFactory.getCurrentSession();
+	      Query<FollowCompany> theQuery = currentSession.createQuery("from FollowCompany where companyId=:companyId and user=:user", FollowCompany.class);
+	      theQuery.setParameter("companyId", companyId);
+	      theQuery.setParameter("user", user);
+	      return theQuery.uniqueResult();
+	 }
+	 @Override
+	 @Transactional
+	public void deleteFollowCompany(User user, int companyId)
+	{
+		 Session session = sessionFactory.getCurrentSession();
+	     Query query = session.createQuery("delete from FollowCompany where user=:user and companyId=:companyId");
+	     query.setParameter("user", user);
+	     query.setParameter("companyId", companyId);
+	     query.executeUpdate();
+	}
 }

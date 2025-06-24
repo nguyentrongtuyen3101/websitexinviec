@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang Chủ - JobVN</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             background-color: #f0f2f5;
@@ -74,6 +75,17 @@
             text-align: center;
             color: #666;
             padding: 2rem;
+        }
+        .save-icon {
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-left: 0.5rem;
+        }
+        .saved {
+            color: #28a745; /* Màu đậm khi đã lưu */
+        }
+        .not-saved {
+            color: #6c757d; /* Màu nhạt khi chưa lưu */
         }
     </style>
 </head>
@@ -142,12 +154,16 @@
                             <c:set var="currentDate" value="<%= new java.util.Date() %>" />
                             <fmt:formatDate var="formattedDeadline" value="${recruitment.deadline}" pattern="dd/MM/yyyy" />
                             <fmt:formatDate var="formattedCurrentDate" value="${currentDate}" pattern="dd/MM/yyyy" />
+                            
                             <c:choose>
                                 <c:when test="${not empty formattedDeadline && formattedDeadline <= formattedCurrentDate}">
                                     <p class="expired-text">Hết hạn</p>
                                 </c:when>
                                 <c:otherwise>
                                     <a href="${pageContext.request.contextPath}/dangtuyen/showformapplyspost?recruitmentsId=${recruitment.id}" class="btn btn-primary apply-btn">Apply</a>
+                                    <c:set var="isSaved" value="${saveStatusMap[recruitment.id]}" />
+                                    <i class="fas fa-bookmark save-icon ${isSaved ? 'saved' : 'not-saved'}" 
+                                       onclick="window.location.href='${pageContext.request.contextPath}/dangtuyen/luucongviec?recruitmentsId=${recruitment.id}&page=${currentPage}'"></i>
                                 </c:otherwise>
                             </c:choose>
                         </div>

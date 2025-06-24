@@ -5,10 +5,12 @@ import java.util.List;
 import topcv.demo.entity.ApplyPost;
 import topcv.demo.entity.Category;
 import topcv.demo.entity.Company;
+import topcv.demo.entity.FollowCompany;
 
 import org.springframework.stereotype.Repository;
 
 import topcv.demo.entity.Recruitment;
+import topcv.demo.entity.SaveJob;
 import topcv.demo.entity.User;
 
 @Repository
@@ -28,4 +30,10 @@ public interface dangtuyen_service {
 	public ApplyPost timApplyPostbybyuserandrecruirement(User user,int idrecruirement);
 	public void deleteapplypost(User user,int recuirementid);
 	public List<ApplyPost> getlisstapplipostbyrecruirement(int recuirementid);
+	public void savejob(SaveJob saveJob);
+	public SaveJob timjobbyuserandidrecruirement(User user,int idrecruirement);
+	public void deleteSaveJob(User user, int recruitmentId);
+	public void folowcompany(FollowCompany followCompany);
+	public FollowCompany timFollowCompanybyuserandidrecruirement(User user,int companyId);
+	public void deleteFollowCompany(User user, int companyId);
 }

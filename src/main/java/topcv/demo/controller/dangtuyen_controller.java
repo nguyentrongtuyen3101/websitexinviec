@@ -20,7 +20,9 @@ import topcv.demo.entity.ApplyPost;
 import topcv.demo.entity.CV;
 import topcv.demo.entity.Category;
 import topcv.demo.entity.Company;
+import topcv.demo.entity.FollowCompany;
 import topcv.demo.entity.Recruitment;
+import topcv.demo.entity.SaveJob;
 import topcv.demo.entity.User;
 import topcv.demo.service.account__service;
 import topcv.demo.service.dangtuyen_service;
@@ -155,7 +157,7 @@ public class dangtuyen_controller {
 		return"dangtuyenform";
 	}
 	@GetMapping("/showformapplyspost")
-	public String showformappltypage(@RequestParam("recruitmentsId") int id,HttpSession session,Model model)
+	public String showformappltypage(@RequestParam("recruitmentsId")int id,HttpSession session,Model model)
 	{
 		String gmail = (String) session.getAttribute("userEmail");
         System.out.println("userEmail in profile_company_controller: " + gmail); 
@@ -173,14 +175,16 @@ public class dangtuyen_controller {
         	model.addAttribute("error", "Khong co bai dang tuyen dung nay");
         	return "redirect:/home/show_home";
         }
-        boolean hasApplied = dangtuyen_service.timApplyPostbybyuserandrecruirement(user, id) != null;
+        boolean hasApplied = dangtuyen_service.timApplyPostbybyuserandrecruirement(user, id)!= null;
+        boolean isfollow=dangtuyen_service.timFollowCompanybyuserandidrecruirement(user, recruitment.getCompany().getId())!=null;
         model.addAttribute("hasApplied", hasApplied);
         model.addAttribute("user",user);
         model.addAttribute("recruitments",recruitment);
         model.addAttribute("applyPost",new ApplyPost());
+        model.addAttribute("isfollow",isfollow);
         return"formApplyPost";
 	}
-	@PostMapping("applypostaction")
+	@PostMapping("/applypostaction")
 	public String applyPostaction(@ModelAttribute("applyPost") ApplyPost applyPost,@RequestParam("recruitmentsId") int recruitmentID,@RequestParam("chouseCV") boolean chouseCV,Model model,HttpSession session,@RequestParam("fileName") MultipartFile cvFile)
 	{
 		String gmail = (String) session.getAttribute("userEmail");
@@ -273,6 +277,74 @@ public class dangtuyen_controller {
         model.addAttribute("listaApplyPosts",listaApplyPosts);
         model.addAttribute("user",user);
         return "chitietbaodang";
+	}
+	@GetMapping("luucongviec")
+	public String luucongviec(@RequestParam("recruitmentsId") int id,HttpSession session,Model model,@RequestParam(value = "page", defaultValue = "0") int page)
+	{
+		String gmail = (String) session.getAttribute("userEmail");
+        System.out.println("userEmail in profile_company_controller: " + gmail); 
+        if (gmail == null) {
+            System.out.println("userEmail is null, redirecting to login page");
+            return "redirect:/account/show_form_dangnhap";
+        }
+        User user2=account__service.timaccountbygmail(gmail);
+        if (user2 == null) {
+            System.out.println("userEmail is null, redirecting to login page");
+            return "redirect:/account/show_form_dangky";
+        }
+        SaveJob saveJob = dangtuyen_service.timjobbyuserandidrecruirement(user2, id);
+        if (saveJob != null) {
+            
+            dangtuyen_service.deleteSaveJob(user2, id);
+        } else {
+           
+            saveJob = new SaveJob();
+            saveJob.setRecruitmentId(id);
+            saveJob.setUser(user2);
+            dangtuyen_service.savejob(saveJob);
+        }
+        
+        return"redirect:/dangtuyen/showformapplyspost?recruitmentsId="+id;
+	}
+	@PostMapping("/followcompany")
+	public String luucongviec(@RequestParam("recruitmentsId") int id,HttpSession session,Model model)
+	{
+		String gmail = (String) session.getAttribute("userEmail");
+        System.out.println("userEmail in profile_company_controller: " + gmail); 
+        if (gmail == null) {
+            System.out.println("userEmail is null, redirecting to login page");
+            return "redirect:/account/show_form_dangnhap";
+        }
+        User user2=account__service.timaccountbygmail(gmail);
+        if (user2 == null) {
+            System.out.println("userEmail is null, redirecting to login page");
+            return "redirect:/account/show_form_dangky";
+        }
+        Recruitment recruitment=dangtuyen_service.timRecruitmentbyid(id);
+        FollowCompany followCompany=new FollowCompany();
+        followCompany.setCompanyId(recruitment.getCompany().getId());
+        followCompany.setUser(user2);
+        followCompany.setCompany(recruitment.getCompany());
+        dangtuyen_service.folowcompany(followCompany);
+        return"redirect:/dangtuyen/showformapplyspost?recruitmentsId="+id;
+	}
+	@PostMapping("/deletefollow")
+	public String deletefollow(@RequestParam("recruitmentsId") int id,HttpSession session,Model model)
+	{
+		String gmail = (String) session.getAttribute("userEmail");
+        System.out.println("userEmail in profile_company_controller: " + gmail); 
+        if (gmail == null) {
+            System.out.println("userEmail is null, redirecting to login page");
+            return "redirect:/account/show_form_dangnhap";
+        }
+        User user2=account__service.timaccountbygmail(gmail);
+        if (user2 == null) {
+            System.out.println("userEmail is null, redirecting to login page");
+            return "redirect:/account/show_form_dangky";
+        }
+        Recruitment recruitment=dangtuyen_service.timRecruitmentbyid(id);
+        dangtuyen_service.deleteFollowCompany(user2, recruitment.getCompany().getId());
+        return"redirect:/dangtuyen/showformapplyspost?recruitmentsId="+id;
 	}
 	
 }
