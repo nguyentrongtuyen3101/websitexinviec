@@ -98,6 +98,8 @@ public class dangtuyen_controller {
         if (user2 == null ||!"COMPANY".equals(user2.getRoleName().toString())) {
         	return "redirect:/account/show_form_dangnhap";
         }
+        if(dangtuyen_service.timApplyPostbybyrecruirement(dangtuyen_service.timRecruitmentbyid(id))!=null)dangtuyen_service.deleteapplypostbycruiment(dangtuyen_service.timRecruitmentbyid(id));
+        if(dangtuyen_service.timjobbyrecruirement(id)!=null)dangtuyen_service.deleteSaveJobbyecruiment(id);
         dangtuyen_service.deletebaidang(id);
         return "redirect:/dangtuyen/showformlistbaidang?page=" + page;
 	}
@@ -111,18 +113,24 @@ public class dangtuyen_controller {
             return "redirect:/account/show_form_dangnhap";
         }
         User user=account__service.timaccountbygmail(gmail);
-        if (user == null ||!"COMPANY".equals(user.getRoleName().toString())) {
-        	return "redirect:/account/show_form_dangnhap";
+        if (user == null) {
+        	return "redirect:/account/show_form_dangky";
         }
-        Company company=account__service.timcompanybyuserid(user);
-        if (company == null) {
-        	return "redirect:/account/show_form_dangnhap";
-        }
+        Company company=new Company();
         int pageSize = 5;
-        List<Recruitment> recruitments = dangtuyen_service.getRecruitments(user, page, pageSize);
-        long totalRecruitments = dangtuyen_service.getTotalRecruitments(user);
-        
-        int totalPages = (int) Math.ceil((double) totalRecruitments / pageSize);
+        int totalPages=0;
+        List<Recruitment> recruitments=null;
+        Long totalRecruitments=null;
+        if("COMPANY".equals(user.getRoleName().toString()))
+        {
+        	company= account__service.timcompanybyuserid(user);
+            if (company == null) {
+            	return "redirect:/account/show_form_dangnhap";
+            }
+        	 recruitments = dangtuyen_service.getRecruitments(user, page, pageSize);
+             totalRecruitments = dangtuyen_service.getTotalRecruitments(user);  
+            totalPages = (int) Math.ceil((double) totalRecruitments / pageSize);
+        }
 
         model.addAttribute("recruitments", recruitments);
         model.addAttribute("user", user);
@@ -175,7 +183,7 @@ public class dangtuyen_controller {
         	model.addAttribute("error", "Khong co bai dang tuyen dung nay");
         	return "redirect:/home/show_home";
         }
-        boolean hasApplied = dangtuyen_service.timApplyPostbybyuserandrecruirement(user, id)!= null;
+        boolean hasApplied = dangtuyen_service.timApplyPostbybyuserandrecruirement(user, dangtuyen_service.timRecruitmentbyid(id))!= null;
         boolean isfollow=dangtuyen_service.timFollowCompanybyuserandidrecruirement(user, recruitment.getCompany().getId())!=null;
         model.addAttribute("hasApplied", hasApplied);
         model.addAttribute("user",user);
@@ -232,7 +240,7 @@ public class dangtuyen_controller {
 	        }
         	applyPost2.setNameCv(fileName);
 		}
-        applyPost2.setRecruitmentId(recruitmentID);
+        applyPost2.setRecruitment(dangtuyen_service.timRecruitmentbyid(recruitmentID));
         applyPost2.setStatus(0);
         applyPost2.setText(applyPost.getText());
         applyPost2.setUser(user2);
@@ -255,7 +263,7 @@ public class dangtuyen_controller {
             System.out.println("userEmail is null, redirecting to login page");
             return "redirect:/account/show_form_dangky";
         }
-        dangtuyen_service.deleteapplypost(user2, id);
+        dangtuyen_service.deleteapplypost(user2, dangtuyen_service.timRecruitmentbyid(id));
         return"redirect:/dangtuyen/showformapplyspost?recruitmentsId="+id;
 	}
 	@GetMapping("/showformchitietbaidang")
@@ -272,7 +280,7 @@ public class dangtuyen_controller {
         	return "redirect:/account/show_form_dangnhap";
         }
         Recruitment recruitment=dangtuyen_service.timRecruitmentbyid(recruitmentsId);
-        List<ApplyPost> listaApplyPosts=dangtuyen_service.getlisstapplipostbyrecruirement(recruitmentsId);
+        List<ApplyPost> listaApplyPosts=dangtuyen_service.getlisstapplipostbyrecruirement(dangtuyen_service.timRecruitmentbyid(recruitmentsId));
         model.addAttribute("recruitment",recruitment);
         model.addAttribute("listaApplyPosts",listaApplyPosts);
         model.addAttribute("user",user);
@@ -346,5 +354,149 @@ public class dangtuyen_controller {
         dangtuyen_service.deleteFollowCompany(user2, recruitment.getCompany().getId());
         return"redirect:/dangtuyen/showformapplyspost?recruitmentsId="+id;
 	}
-	
+	@GetMapping("/showformlistsavejob")
+	public String showlistsavejob(Model model, HttpSession session,
+			@RequestParam(value = "page", defaultValue = "0") int page,
+			@RequestParam(value = "companyID", required = false) Integer companyID) {
+		String gmail = (String) session.getAttribute("userEmail");
+		System.out.println("userEmail in profile_company_controller: " + gmail);
+		if (gmail == null) {
+			System.out.println("userEmail is null, redirecting to login page");
+			return "redirect:/account/show_form_dangnhap";
+		}
+		User user = account__service.timaccountbygmail(gmail);
+		if (user == null) {
+			System.out.println("userEmail is null, redirecting to login page");
+			return "redirect:/account/show_form_dangky";
+		}
+		int pageSize = 5;
+		List<Recruitment> recruitments;
+		long totalRecruitments;
+		int totalPages;
+		Company company = null;
+		String title = "Danh Sách Công Việc Đã Lưu";
+		if (companyID != null && companyID > 0) {
+			company = account__service.timcompanybyid(companyID);
+			if (company == null) {
+				System.out.println("Company not found for companyID = " + companyID);
+				return "redirect:/home/show_home";
+			}
+			recruitments = dangtuyen_service.getRecruitmentsbycompany(company, page, pageSize);
+			totalRecruitments = dangtuyen_service.getTotalRecruitmentsbycompany(company);
+			title = "Danh Sách Bài Đăng Của " + company.getNameCompany();
+		} else {
+			recruitments = dangtuyen_service.getSavedRecruitmentsByUser(user, page, pageSize);
+			totalRecruitments = dangtuyen_service.getTotalSavedRecruitments(user);
+		}
+		totalPages = (int) Math.ceil((double) totalRecruitments / pageSize);
+
+		model.addAttribute("recruitments", recruitments);
+		model.addAttribute("user", user);
+		model.addAttribute("company", company);
+		model.addAttribute("currentPage", page);
+		model.addAttribute("pageSize", pageSize);
+		model.addAttribute("totalPages", totalPages);
+		model.addAttribute("totalRecruitments", totalRecruitments);
+		model.addAttribute("now", new Date());
+		model.addAttribute("title", title);
+		return "listsavejob";
+	}
+	@GetMapping("/showlistfollowcompany")
+	public String showlistfollowcompany(Model model,HttpSession session,@RequestParam(value = "page", defaultValue = "0") int page)
+	{
+		String gmail = (String) session.getAttribute("userEmail");
+        System.out.println("userEmail in profile_company_controller: " + gmail); 
+        if (gmail == null) {
+            System.out.println("userEmail is null, redirecting to login page");
+            return "redirect:/account/show_form_dangnhap";
+        }
+        User user2=account__service.timaccountbygmail(gmail);
+        if (user2 == null) {
+            System.out.println("userEmail is null, redirecting to login page");
+            return "redirect:/account/show_form_dangky";
+        }
+        int pageSize = 5;
+        List<FollowCompany> followCompanies = dangtuyen_service.getlistFollowCompanies(user2, page, pageSize);
+        long totalfollowcompany = dangtuyen_service.gettotalFollowCompanies(user2);
+        
+        int totalPages = (int) Math.ceil((double) totalfollowcompany / pageSize);
+
+        model.addAttribute("followCompanies", followCompanies);
+        model.addAttribute("user", user2);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("totalfollowcompany", totalfollowcompany);
+        model.addAttribute("now", new Date()); 
+        return"listfollowcompany";
+	}
+	@PostMapping("/showdanhsachcongviectheocompany")
+	public String showdanhsachcongviectheocompany(Model model,HttpSession session,@RequestParam(value = "page", defaultValue = "0") int page,@RequestParam("companyID")int id)
+	{
+		String gmail = (String) session.getAttribute("userEmail");
+        System.out.println("userEmail in profile_company_controller: " + gmail); 
+        if (gmail == null) {
+            System.out.println("userEmail is null, redirecting to login page");
+            return "redirect:/account/show_form_dangnhap";
+        }
+        User user2=account__service.timaccountbygmail(gmail);
+        if (user2 == null) {
+            System.out.println("userEmail is null, redirecting to login page");
+            return "redirect:/account/show_form_dangky";
+        }
+        int pageSize = 5;
+        Company company=account__service.timcompanybyid(id);
+        
+        List<Recruitment> recruitments = dangtuyen_service.getRecruitmentsbycompany(company, page, pageSize);
+        long totalfollowcompany = dangtuyen_service.getTotalRecruitmentsbycompany(company);
+        
+        int totalPages = (int) Math.ceil((double) totalfollowcompany / pageSize);
+
+        model.addAttribute("recruitments", recruitments);
+        model.addAttribute("user", user2);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("totalfollowcompany", totalfollowcompany);
+        model.addAttribute("now", new Date()); 
+        return"redirect:/dangtuyen/listsavejob";
+	}
+	@GetMapping("/listungvien")
+	public String listungvien(Model model,HttpSession session)
+	{
+		String gmail = (String) session.getAttribute("userEmail");
+        System.out.println("userEmail in profile_company_controller: " + gmail); 
+        if (gmail == null) {
+            System.out.println("userEmail is null, redirecting to login page");
+            return "redirect:/account/show_form_dangnhap";
+        }
+        User user2=account__service.timaccountbygmail(gmail);
+        if (user2 == null && "COMPANY".equals(user2.getRoleName().toString())) {
+            System.out.println("userEmail is null, redirecting to login page");
+            return "redirect:/account/show_form_dangky";
+        }
+        List<ApplyPost> applyPosts=dangtuyen_service.getlistApplyPosts(user2);
+        model.addAttribute("user",user2);
+        model.addAttribute("applyPosts", applyPosts);
+        return"listungvien";
+	}
+	@GetMapping("/showcompanybyid")
+	public String showcompany(Model model,HttpSession session,@RequestParam("companyID") int id)
+	{
+		String gmail = (String) session.getAttribute("userEmail");
+        System.out.println("userEmail in profile_company_controller: " + gmail); 
+        if (gmail == null) {
+            System.out.println("userEmail is null, redirecting to login page");
+            return "redirect:/account/show_form_dangnhap";
+        }
+        User user2=account__service.timaccountbygmail(gmail);
+        if (user2 == null && "COMPANY".equals(user2.getRoleName().toString())) {
+            System.out.println("userEmail is null, redirecting to login page");
+            return "redirect:/account/show_form_dangky";
+        }
+        Company company=account__service.timcompanybyid(id);
+        model.addAttribute("company",company);
+        model.addAttribute("user",user2);
+        return "companychitiet";
+	}
 }

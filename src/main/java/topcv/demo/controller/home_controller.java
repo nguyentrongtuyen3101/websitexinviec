@@ -92,8 +92,6 @@ public class home_controller {
         model.addAttribute("textinput", textinput); 
         model.addAttribute("categoryid", categoryId); 
         model.addAttribute("typeselect", typeselect);
-
-        
         if (user != null && listrecruitments != null) {
             Map<Integer, Boolean> saveStatusMap = new HashMap<>();
             for (Recruitment rec : listrecruitments) {

@@ -46,6 +46,15 @@ public class account_dao_imp implements account_dao{
 			 return null;
 		}  
 	}
+	@Override
+	@Transactional
+	public User timaccountbyid(int id)
+	{
+		Session session = sessionFactory.getCurrentSession();
+        Query<User> query = session.createQuery("FROM User WHERE id = :id", User.class);
+        query.setParameter("id", id);
+        return query.uniqueResult();
+	}
 	 @Override
 	 @Transactional
 	    public void updatemk( String gmail, String mkmoi) {
@@ -185,5 +194,14 @@ public class account_dao_imp implements account_dao{
 		 Query<CV> theQuery=session.createQuery("from CV where fileName=:fileName",CV.class);
 		 theQuery.setParameter("fileName", fileName);
 		 return theQuery.uniqueResult();
+	 }
+	 @Override
+	 @Transactional
+	 public Company timcompanybyid(int id)
+	 {
+		 Session session = sessionFactory.getCurrentSession();
+         Query<Company> query = session.createQuery("FROM Company WHERE id = :id", Company.class);
+         query.setParameter("id", id);
+         return query.uniqueResult();
 	 }
 }

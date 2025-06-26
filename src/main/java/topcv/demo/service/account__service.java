@@ -37,4 +37,6 @@ public interface account__service {
 	public CV timCvbyid(Integer id);
 	public CV getidcvmoinhat(User user);
 	public CV timcvbyfilenamr(String fileName);
+	public Company timcompanybyid(int id);
+	public User timaccountbyid(int id);
 }

@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang Chủ - JobVN</title>
+    <title>Danh Sách Công Việc - JobVN</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -65,12 +65,6 @@
         .pagination {
             margin-top: 1.5rem;
         }
-        .search-form {
-            margin-bottom: 2rem;
-        }
-        .search-form .form-select, .search-form .form-control {
-            margin-right: 1rem;
-        }
         .no-data {
             text-align: center;
             color: #666;
@@ -92,46 +86,15 @@
 <body>
     <!-- Nhúng header -->
     <jsp:include page="header.jsp" />
-    <h1>Chào mừng đến với Trang Chủ</h1>
+    <h1>${title}</h1>
 
-    <!-- Form tìm kiếm -->
+    <!-- Danh sách công việc đã lưu -->
     <div class="job-list-container">
-        <form action="${pageContext.request.contextPath}/home/timkiemlob" method="get" class="search-form d-flex">
-            <select name="chouse" class="form-select">
-                <option value="1" ${chouse == 1 ? 'selected' : ''} selected>Tìm theo tiêu đề</option>
-                <option value="2" ${chouse == 2 ? 'selected' : ''}>Tìm theo địa chỉ</option>
-                <option value="3" ${chouse == 3 ? 'selected' : ''}>Tìm theo công ty</option>
-            </select>
-            <input type="text" name="textinput" class="form-control" value="${not empty textinput ? textinput : ''}" placeholder="Nhập từ khóa">
-            <select name="categoryid" class="form-select">
-                <option value="0" ${empty categoryid || categoryid == 0 ? 'selected' : ''}>Tất cả</option>
-                <c:choose>
-                    <c:when test="${empty listcCategories}">
-                        <option value="1">Không có danh mục</option>
-                    </c:when>
-                    <c:otherwise>
-                        <option value="${listcCategories[0].id}" ${categoryid == listcCategories[0].id ? 'selected' : ''}>${listcCategories[0].name}</option>
-                        <c:forEach var="cat" items="${listcCategories}" begin="1">
-                            <option value="${cat.id}" ${cat.id == categoryid ? 'selected' : ''}>${cat.name}</option>
-                        </c:forEach>
-                    </c:otherwise>
-                </c:choose>
-            </select>
-            <select name="typeselect" class="form-select">
-                <option value="" ${empty typeselect ? 'selected' : ''}>Tất cả loại</option>
-                <option value="Toàn thời gian" ${typeselect == 'FULL_TIME' ? 'selected' : ''}>Toàn thời gian</option>
-                <option value="Bán thời gian" ${typeselect == 'PART_TIME' ? 'selected' : ''}>Bán thời gian</option>
-                <option value="Thực tập" ${typeselect == 'INTERNSHIP' ? 'selected' : ''}>Thực tập</option>
-            </select>
-            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
-        </form>
-
-        <!-- Hiển thị danh sách bài đăng chỉ khi có kết quả tìm kiếm -->
-        <c:if test="${not empty listrecruitments}">
+        <c:if test="${not empty recruitments}">
             <c:if test="${not empty error}">
                 <p class="text-danger">${error}</p>
             </c:if>
-            <c:forEach var="recruitment" items="${listrecruitments}">
+            <c:forEach var="recruitment" items="${recruitments}">
                 <div class="job-item">
                     <div class="d-flex align-items-center">
                         <c:if test="${not empty recruitment.company.logo}">
@@ -152,17 +115,13 @@
                                 <span>Address: ${recruitment.address}</span>
                             </div>
                             <c:set var="currentDate" value="<%= new java.util.Date() %>" />
-                            <fmt:formatDate var="formattedDeadline" value="${recruitment.deadline}" pattern="dd/MM/yyyy" />
-                            <fmt:formatDate var="formattedCurrentDate" value="${currentDate}" pattern="dd/MM/yyyy" />
-                            
                             <c:choose>
                                 <c:when test="${recruitment.deadline != null && recruitment.deadline.time <= currentDate.time}">
                                     <p class="expired-text">Hết hạn</p>
                                 </c:when>
                                 <c:otherwise>
                                     <a href="${pageContext.request.contextPath}/dangtuyen/showformapplyspost?recruitmentsId=${recruitment.id}" class="btn btn-primary apply-btn">Apply</a>
-                                    <c:set var="isSaved" value="${saveStatusMap[recruitment.id]}" />
-                                    <i class="fas fa-bookmark save-icon ${isSaved ? 'saved' : 'not-saved'}" 
+                                    <i class="fas fa-bookmark save-icon saved" 
                                        onclick="window.location.href='${pageContext.request.contextPath}/dangtuyen/luucongviec?recruitmentsId=${recruitment.id}&page=${currentPage}'"></i>
                                 </c:otherwise>
                             </c:choose>
@@ -177,15 +136,15 @@
                     <ul class="pagination justify-content-center">
                         <c:forEach var="i" begin="0" end="${totalPages - 1}">
                             <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                <a class="page-link" href="${pageContext.request.contextPath}/home/timkiemlob?chouse=${chouse}&textinput=${textinput}&categoryid=${categoryid}&typeselect=${typeselect}&page=${i}">${i + 1}</a>
+                                <a class="page-link" href="${pageContext.request.contextPath}/dangtuyen/showformlistsavejob?page=${i}${company != null ? '&companyID=' : ''}${company != null ? company.id : ''}">${i + 1}</a>
                             </li>
                         </c:forEach>
                     </ul>
                 </nav>
             </c:if>
         </c:if>
-        <c:if test="${empty listrecruitments && not empty textinput}">
-            <div class="no-data">Không có bài đăng nào phù hợp.</div>
+        <c:if test="${empty recruitments}">
+            <div class="no-data">Bạn chưa lưu công việc nào.</div>
         </c:if>
     </div>
 

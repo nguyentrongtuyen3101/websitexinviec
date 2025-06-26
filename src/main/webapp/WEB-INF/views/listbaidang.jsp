@@ -178,6 +178,7 @@
                                     </c:choose>
                                 </td>
                                 <td>
+                                <c:if test="${user.roleName== 'COMPANY'}">
                                     <a href="${pageContext.request.contextPath}/dangtuyen/showformchitietbaidang?recruitmentsId=${recruitment.id}" class="btn action-btn detail-btn">Chi tiết</a>
                                     <a href="${pageContext.request.contextPath}/dangtuyen/showformupdate?idbaidang=${recruitment.id}" class="btn action-btn update-btn">Cập nhật</a>
                                     <form action="${pageContext.request.contextPath}/dangtuyen/deletebaidang" method="post" style="display:inline;">
@@ -186,6 +187,17 @@
                                         <input type="hidden" name="page" value="${currentPage}">
                                         <button type="submit" class="btn action-btn delete-btn" onclick="return confirm('Bạn có chắc chắn muốn xóa bài đăng này?')">Xóa</button>
                                     </form>
+                                    </c:if>
+                                    <c:if test="${user.roleName== 'USER'}">
+                                    	<c:when test="${not empty formattedDeadline && formattedDeadline <= formattedCurrentDate}">
+                                    <p class="expired-text">Hết hạn</p>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="${pageContext.request.contextPath}/dangtuyen/showformapplyspost?recruitmentsId=${recruitment.id}" class="btn btn-primary apply-btn">Apply</a>
+                                    <i class="fas fa-bookmark save-icon saved" 
+                                       onclick="window.location.href='${pageContext.request.contextPath}/dangtuyen/luucongviec?recruitmentsId=${recruitment.id}&page=${currentPage}'"></i>
+                                </c:otherwise>
+                                    </c:if>
                                 </td>
                             </tr>
                         </c:forEach>

@@ -27,13 +27,24 @@ public interface dangtuyen_dao {
 	public long getTotalRecruitmentsdk(String keyword,String type,Category category,String giatritimkiem,Company company);
 	public Company timCompanybynamecompany(String namecompany);
 	public String createApplyPost(ApplyPost applyPost);
-	public ApplyPost timApplyPostbybyuserandrecruirement(User user,int idrecruirement);
-	public void deleteapplypost(User user,int recuirementid);
-	public List<ApplyPost> getlisstapplipostbyrecruirement(int recuirementid);
+	public ApplyPost timApplyPostbybyuserandrecruirement(User user,Recruitment recruirement);
+	public void deleteapplypost(User user,Recruitment recuirement);
+	public List<ApplyPost> getlisstapplipostbyrecruirement(Recruitment recuirement);
 	public void savejob(SaveJob saveJob);
 	public SaveJob timjobbyuserandidrecruirement(User user,int idrecruirement);
 	public void deleteSaveJob(User user, int recruitmentId);
 	public void folowcompany(FollowCompany followCompany);
 	public FollowCompany timFollowCompanybyuserandidrecruirement(User user,int companyId);
 	public void deleteFollowCompany(User user, int companyId);
+	public long getTotalSavedRecruitments(User user);
+	public List<Recruitment> getSavedRecruitmentsByUser(User user, int page, int size);
+	public List<FollowCompany> getlistFollowCompanies(User user,int page,int size);
+	public Long gettotalFollowCompanies(User user);
+	public List<Recruitment> getRecruitmentsbycompany(Company company,int page, int size);
+	public long getTotalRecruitmentsbycompany(Company company );
+	public SaveJob timjobbyrecruirement(int idrecruirement);
+	public void deleteSaveJobbyecruiment( int recruitmentId);
+	public ApplyPost timApplyPostbybyrecruirement(Recruitment recruitment);
+	public void deleteapplypostbycruiment(Recruitment recruitment);
+	public List<ApplyPost> getlistApplyPosts(User user);
 }

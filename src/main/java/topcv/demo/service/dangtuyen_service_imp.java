@@ -94,21 +94,21 @@ public class dangtuyen_service_imp implements dangtuyen_service{
 	}
 	@Override
 	@Transactional
-	public ApplyPost timApplyPostbybyuserandrecruirement(User user,int idrecruirement)
+	public ApplyPost timApplyPostbybyuserandrecruirement(User user,Recruitment recruitment)
 	{
-		return dangtuyen_dao.timApplyPostbybyuserandrecruirement(user, idrecruirement);
+		return dangtuyen_dao.timApplyPostbybyuserandrecruirement(user, recruitment);
 	}
 	@Override
 	@Transactional
-	public void deleteapplypost(User user,int recuirementid)
+	public void deleteapplypost(User user,Recruitment recuirement)
 	{
-		dangtuyen_dao.deleteapplypost(user, recuirementid);
+		dangtuyen_dao.deleteapplypost(user, recuirement);
 	}
 	@Override
 	@Transactional
-	public List<ApplyPost> getlisstapplipostbyrecruirement(int recuirementid)
+	public List<ApplyPost> getlisstapplipostbyrecruirement(Recruitment recuirement)
 	{
-		return dangtuyen_dao.getlisstapplipostbyrecruirement(recuirementid);
+		return dangtuyen_dao.getlisstapplipostbyrecruirement(recuirement);
 	}
 	@Override
 	@Transactional
@@ -143,5 +143,71 @@ public class dangtuyen_service_imp implements dangtuyen_service{
 	public void deleteFollowCompany(User user, int companyId)
 	{
 		dangtuyen_dao.deleteFollowCompany(user, companyId);
+	}
+	@Override
+	@Transactional
+	public long getTotalSavedRecruitments(User user)
+	{
+		return dangtuyen_dao.getTotalSavedRecruitments(user);
+	}
+	@Override
+	@Transactional
+	public List<Recruitment> getSavedRecruitmentsByUser(User user, int page, int size)
+	{
+		return dangtuyen_dao.getSavedRecruitmentsByUser(user, page, size);
+	}
+	@Override
+	@Transactional
+	public List<FollowCompany> getlistFollowCompanies(User user,int page,int size)
+	{
+		return dangtuyen_dao.getlistFollowCompanies(user, page, size);
+	}
+	@Override
+	@Transactional
+	 public Long gettotalFollowCompanies(User user)
+	 {
+		return dangtuyen_dao.gettotalFollowCompanies(user);
+	 }
+	@Override
+	@Transactional
+	public List<Recruitment> getRecruitmentsbycompany(Company company,int page, int size)
+	{
+		return dangtuyen_dao.getRecruitmentsbycompany(company, page, size);
+	}
+	@Override
+	@Transactional
+	public long getTotalRecruitmentsbycompany(Company company )
+	{
+		return dangtuyen_dao.getTotalRecruitmentsbycompany(company);
+	}
+	@Override
+	@Transactional
+	public SaveJob timjobbyrecruirement(int idrecruirement)
+	{
+		return dangtuyen_dao.timjobbyrecruirement(idrecruirement);
+	}
+	@Override
+	@Transactional
+	public void deleteSaveJobbyecruiment( int recruitmentId)
+	{
+		dangtuyen_dao.deleteSaveJobbyecruiment(recruitmentId);
+	}
+	@Override
+	@Transactional
+	public ApplyPost timApplyPostbybyrecruirement(Recruitment recruirement)
+	{
+		return dangtuyen_dao.timApplyPostbybyrecruirement(recruirement);
+	}
+	@Override
+	@Transactional
+	public void deleteapplypostbycruiment(Recruitment recuirement)
+	{
+		dangtuyen_dao.deleteapplypostbycruiment(recuirement);
+	}
+	@Override
+	@Transactional
+	public List<ApplyPost> getlistApplyPosts(User user)
+	{
+		return dangtuyen_dao.getlistApplyPosts(user);
 	}
 }

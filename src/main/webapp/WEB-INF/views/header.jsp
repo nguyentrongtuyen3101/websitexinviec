@@ -24,12 +24,22 @@
                 <li class="nav-item">
                     <a class="nav-link ${pageContext.request.requestURI eq '/jobs' ? 'active' : ''}" href="${pageContext.request.contextPath}/jobs">Công việc</a>
                 </li>
+                <c:if test="${user.roleName== 'COMPANY'}">
                 <li class="nav-item">
-                    <a class="nav-link ${pageContext.request.requestURI eq '/candidates' ? 'active' : ''}" href="${pageContext.request.contextPath}/candidates">Ứng cử viên</a>
+                    <a class="nav-link ${pageContext.request.requestURI eq '/candidates' ? 'active' : ''}" href="${pageContext.request.contextPath}/dangtuyen/listungvien">Ứng cử viên</a>
                 </li>
+                </c:if>
                 <c:if test="${user.roleName== 'COMPANY'}">
                     <li class="nav-item">
                     <a class="nav-link ${pageContext.request.requestURI eq '/post-job' ? 'active' : ''}" href="${pageContext.request.contextPath}/dangtuyen/show_page_dangtuyen">Đăng tuyển</a>
+                </li>
+                </c:if>
+                <c:if test="${user.roleName== 'USER'}">
+                    <li class="nav-item">
+                    <a class="nav-link ${pageContext.request.requestURI eq '/post-job' ? 'active' : ''}" href="${pageContext.request.contextPath}/dangtuyen/showformlistsavejob">savejob</a>
+                </li>
+                 <li class="nav-item">
+                    <a class="nav-link ${pageContext.request.requestURI eq '/post-job' ? 'active' : ''}" href="${pageContext.request.contextPath}/dangtuyen/showlistfollowcompany">followcompany</a>
                 </li>
                 </c:if>
             </ul>

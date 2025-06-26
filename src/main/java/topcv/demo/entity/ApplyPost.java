@@ -18,9 +18,10 @@ public class ApplyPost {
     @Column(name = "created_at")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createdAt;
-
-    @Column(name = "recruitment_id")
-    private int recruitmentId;
+    
+    @ManyToOne
+    @JoinColumn(name = "recruitment_id")
+    private Recruitment  recruitment ;
 
     @Column(name = "name_cv")
     private String nameCv;
@@ -52,12 +53,12 @@ public class ApplyPost {
         this.createdAt = createdAt;
     }
 
-    public int getRecruitmentId() {
-        return recruitmentId;
+    public Recruitment getRecruitment() {
+        return recruitment;
     }
 
-    public void setRecruitmentId(int recruitmentId) {
-        this.recruitmentId = recruitmentId;
+    public void setRecruitment(Recruitment recruitmentId) {
+        this.recruitment = recruitmentId;
     }
 
     public String getNameCv() {

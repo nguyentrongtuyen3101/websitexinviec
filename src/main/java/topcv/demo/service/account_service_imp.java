@@ -360,6 +360,18 @@ public class account_service_imp implements account__service{
 	 {
 		 return account_dao.timcvbyfilenamr(fileName);
 	 }
+	 @Override
+	 @Transactional
+	 public Company timcompanybyid(int id)
+	 {
+		 return account_dao.timcompanybyid(id);
+	 }
+	 @Override
+	 @Transactional
+	 public User timaccountbyid(int id)
+	 {
+		 return account_dao.timaccountbyid(id);
+	 }
 }
 
 

@@ -16,6 +16,7 @@ public interface account_dao {
 	public boolean checkFirstacc();
 	public void saveorupdate(User user);
 	public User timaccountbygmail(String gmail);
+	public User timaccountbyid(int id);
 	public void updatemk( String gmail, String mkmoi);
 	public void updateaccount( User user);
 	public void uploadanh(User user);
@@ -30,4 +31,5 @@ public interface account_dao {
 	public CV timCvbyid(Integer id);
 	public CV getidcvmoinhat(User user);
 	public CV timcvbyfilenamr(String fileName);
+	public Company timcompanybyid(int id);
 }
