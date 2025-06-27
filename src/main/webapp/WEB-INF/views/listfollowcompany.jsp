@@ -11,77 +11,132 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
-            background-color: #f0f2f5;
-            font-family: Arial, sans-serif;
+            background-color: #C9E4D6;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #006241;
+            line-height: 1.6;
         }
         .company-list-container {
             max-width: 1200px;
             margin: 2rem auto;
             padding: 2rem;
-            background-color: white;
+            background-color: #ffffff;
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 6px rgba(0, 98, 65, 0.1);
+            border: 1px solid #00676B;
         }
         .company-item {
+            display: flex;
+            align-items: center;
             padding: 1.5rem;
-            border-bottom: 1px solid #dee2e6;
-            transition: all 0.3s ease;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            background-color: #f5f7f5;
+            border: 1px solid #00676B;
+            transition: all 0.2s ease;
         }
         .company-item:hover {
-            background-color: #f8f9fa;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #C9E4D6;
+            box-shadow: 0 2px 6px rgba(0, 98, 65, 0.15);
         }
         .company-title {
             font-size: 1.5rem;
             font-weight: 600;
-            color: #333;
+            color: #006241;
+            margin-bottom: 0.5rem;
         }
         .company-details {
-            color: #555;
-            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #00676B;
+            line-height: 1.5;
+        }
+        .company-details span {
+            display: block;
+            margin-bottom: 0.25rem;
         }
         .company-logo {
-            width: 80px;
-            height: 80px;
-            border-radius: 10%;
+            width: 56px;
+            height: 56px;
+            border-radius: 8px;
             overflow: hidden;
             margin-right: 1rem;
-            border: 2px solid #DCDCDC;
+            border: 1px solid #00676B;
         }
         .company-logo img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
+        .company-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-grow: 1;
+        }
+        .company-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
         .action-btn {
-            margin-top: 1rem;
-            margin-right: 0.5rem;
+            font-size: 0.9rem;
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        .action-btn-primary {
+            background-color: #F1AF00;
+            border: none;
+            color: #006241;
+        }
+        .action-btn-primary:hover {
+            background-color: #d89b00;
+        }
+        .action-btn-info {
+            background-color: #00676B;
+            border: none;
+            color: #ffffff;
+        }
+        .action-btn-info:hover {
+            background-color: #005558;
         }
         .pagination {
             margin-top: 1.5rem;
+            justify-content: center;
+        }
+        .page-link {
+            border-radius: 6px;
+            margin: 0 0.25rem;
+            color: #006241;
+            border: 1px solid #00676B;
+        }
+        .page-item.active .page-link {
+            background-color: #006241;
+            border-color: #00676B;
+            color: #ffffff;
         }
         .no-data {
             text-align: center;
-            color: #666;
-            padding: 2rem;
+            color: #00676B;
+            font-size: 0.95rem;
+            padding: 1.5rem;
+            font-weight: 500;
         }
-        .follow-icon {
-            font-size: 1.2rem;
-            cursor: pointer;
-            margin-left: 0.5rem;
-        }
-        .followed {
-            color: #28a745; /* Màu đậm khi đã theo dõi */
+        .header-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #006241;
+            text-align: center;
+            margin: 2rem 0;
+            letter-spacing: -0.025em;
         }
     </style>
 </head>
 <body>
-    <!-- Nhúng header -->
     <jsp:include page="header.jsp" />
-    <h1>Danh Sách Công Ty Đã Theo Dõi</h1>
+    <h1 class="header-title">Danh Sách Công Ty Đã Theo Dõi</h1>
 
-    <!-- Danh sách công ty đã theo dõi -->
     <div class="company-list-container">
         <c:if test="${not empty followCompanies}">
             <c:if test="${not empty error}">
@@ -89,7 +144,7 @@
             </c:if>
             <c:forEach var="followCompany" items="${followCompanies}">
                 <div class="company-item">
-                    <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center w-100">
                         <c:if test="${not empty followCompany.company.logo}">
                             <div class="company-logo">
                                 <img src="${pageContext.request.contextPath}/uploads/${followCompany.company.logo}" alt="Logo công ty">
@@ -100,21 +155,23 @@
                                 <img src="${pageContext.request.contextPath}/resources/images/default-logo.jpg" alt="Logo công ty">
                             </div>
                         </c:if>
-                        <div>
-                            <div class="company-title">${followCompany.company.nameCompany}</div>
-                            <div class="company-details">
-                                <span>Email: ${followCompany.company.email}</span><br>
-                                <span>Địa điểm: ${followCompany.company.address}</span><br>
-                                <span>Số điện thoại: ${followCompany.company.phoneNumber}</span>
+                        <div class="company-content">
+                            <div>
+                                <div class="company-title">${followCompany.company.nameCompany}</div>
+                                <div class="company-details">
+                                    <span><i class="fas fa-envelope me-1"></i> ${followCompany.company.email}</span>
+                                    <span><i class="fas fa-map-marker-alt me-1"></i> ${followCompany.company.address}</span>
+                                    <span><i class="fas fa-phone me-1"></i> ${followCompany.company.phoneNumber}</span>
+                                </div>
                             </div>
-                            <a href="${pageContext.request.contextPath}/dangtuyen/showformlistsavejob?companyID=${followCompany.company.id}" class="btn btn-primary action-btn">Danh sách bài đăng</a>
-                            <a href="${pageContext.request.contextPath}/dangtuyen/showcompanybyid?companyID=${followCompany.company.id}" class="btn btn-info action-btn">Chi tiết</a>
+                            <div class="company-actions">
+                                <a href="${pageContext.request.contextPath}/dangtuyen/showformlistsavejob?companyID=${followCompany.company.id}" class="btn action-btn action-btn-primary">Danh sách bài đăng</a>
+                                <a href="${pageContext.request.contextPath}/dangtuyen/showcompanybyid?companyID=${followCompany.company.id}" class="btn action-btn action-btn-info">Chi tiết</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </c:forEach>
-
-            <!-- Phân trang -->
             <c:if test="${totalPages > 1}">
                 <nav aria-label="Page navigation">
                     <ul class="pagination justify-content-center">

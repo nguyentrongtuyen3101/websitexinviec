@@ -352,4 +352,27 @@ public class dangtuyen_dao_imp implements dangtuyen_dao{
 	     theQuery.setParameter("user", user);
 	     return theQuery.getResultList();
 	 }
+	 @Override
+	 @Transactional
+	 public List<Recruitment> getnewlistRecruitments()
+	 {
+		 Session currentSession = sessionFactory.getCurrentSession();
+	      Query<Recruitment> theQuery = currentSession.createQuery("from Recruitment ORDER BY id DESC", Recruitment.class);
+	      theQuery.setMaxResults(5);
+	      return theQuery.getResultList();
+	 }
+	 @Override
+	 @Transactional
+	 public List<Category> getTop4CategoriesByJobCount() {
+	     Session currentSession = sessionFactory.getCurrentSession();
+	     Query<Category> theQuery = currentSession.createQuery(
+	         "SELECT c FROM Category c " +
+	         "LEFT JOIN Recruitment r WITH r.category = c " +
+	         "GROUP BY c " +
+	         "ORDER BY COUNT(r) DESC",
+	         Category.class
+	     );
+	     theQuery.setMaxResults(4);
+	     return theQuery.getResultList();
+	 }
 }

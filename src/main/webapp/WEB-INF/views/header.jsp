@@ -21,9 +21,6 @@
                 <li class="nav-item">
                     <a class="nav-link ${pageContext.request.requestURI eq '/home/show_home' ? 'active' : ''}" href="${pageContext.request.contextPath}/home/show_home">Trang chủ</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link ${pageContext.request.requestURI eq '/jobs' ? 'active' : ''}" href="${pageContext.request.contextPath}/jobs">Công việc</a>
-                </li>
                 <c:if test="${user.roleName== 'COMPANY'}">
                 <li class="nav-item">
                     <a class="nav-link ${pageContext.request.requestURI eq '/candidates' ? 'active' : ''}" href="${pageContext.request.contextPath}/dangtuyen/listungvien">Ứng cử viên</a>

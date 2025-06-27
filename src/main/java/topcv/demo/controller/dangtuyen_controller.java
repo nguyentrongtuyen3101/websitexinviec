@@ -1,4 +1,6 @@
 package topcv.demo.controller;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.PublicKey;
 //import java.util.ArrayList;
 import java.util.Date;
@@ -287,7 +289,12 @@ public class dangtuyen_controller {
         return "chitietbaodang";
 	}
 	@GetMapping("luucongviec")
-	public String luucongviec(@RequestParam("recruitmentsId") int id,HttpSession session,Model model,@RequestParam(value = "page", defaultValue = "0") int page)
+	public String luucongviec(@RequestParam("recruitmentsId") int id,HttpSession session,Model model,@RequestParam(value = "page", defaultValue = "0") int page,
+			@RequestParam(value = "categoryid", defaultValue = "0") int categoryId,
+	        @RequestParam(value = "textinput", defaultValue = "") String textinput,
+	        @RequestParam(value = "chouse", defaultValue = "1") int chouse,
+	        @RequestParam(value = "typeselect", defaultValue = "") String typeselect,
+			@RequestParam(value = "source", defaultValue = "home") String source)
 	{
 		String gmail = (String) session.getAttribute("userEmail");
         System.out.println("userEmail in profile_company_controller: " + gmail); 
@@ -312,10 +319,23 @@ public class dangtuyen_controller {
             dangtuyen_service.savejob(saveJob);
         }
         
-        return"redirect:/dangtuyen/showformapplyspost?recruitmentsId="+id;
+        if("home".equals(source))
+        {
+        	List<Recruitment>recruitments=dangtuyen_service.getnewlistRecruitments();
+    		List<Category> categories=dangtuyen_service.getTop4CategoriesByJobCount();
+    		model.addAttribute("recruitments",recruitments);
+    		model.addAttribute("categories",categories);
+        	model.addAttribute("chouse", chouse); 
+            model.addAttribute("textinput", textinput); 
+            model.addAttribute("categoryid", categoryId); 
+            model.addAttribute("typeselect", typeselect);
+        	return"redirect:/home/timkiemlob?page="+page;
+       	}
+        else if("listsavejob".equals(source))return"redirect:/dangtuyen/showformlistsavejob?page="+page;
+        return "redirect:/account/show_form_dangnhap";
 	}
 	@PostMapping("/followcompany")
-	public String luucongviec(@RequestParam("recruitmentsId") int id,HttpSession session,Model model)
+	public String luucongviec(@RequestParam(value = "recruitmentsId",defaultValue = "0") int id,HttpSession session,Model model,@RequestParam("source")String source,@RequestParam(value = "companyID",defaultValue = "0")int idcompany)
 	{
 		String gmail = (String) session.getAttribute("userEmail");
         System.out.println("userEmail in profile_company_controller: " + gmail); 
@@ -328,16 +348,27 @@ public class dangtuyen_controller {
             System.out.println("userEmail is null, redirecting to login page");
             return "redirect:/account/show_form_dangky";
         }
-        Recruitment recruitment=dangtuyen_service.timRecruitmentbyid(id);
+        
         FollowCompany followCompany=new FollowCompany();
-        followCompany.setCompanyId(recruitment.getCompany().getId());
+        if("applipost".equals(source))
+        {
+        	Recruitment recruitment=dangtuyen_service.timRecruitmentbyid(id);
+        	followCompany.setCompanyId(recruitment.getCompany().getId());
+        	followCompany.setCompany(recruitment.getCompany());
+        }
+        else if("chitietcompany".equals(source))
+        {
+        	followCompany.setCompanyId(idcompany);
+        	followCompany.setCompany(account__service.timcompanybyid(idcompany));
+        }
         followCompany.setUser(user2);
-        followCompany.setCompany(recruitment.getCompany());
         dangtuyen_service.folowcompany(followCompany);
-        return"redirect:/dangtuyen/showformapplyspost?recruitmentsId="+id;
+        if("applipost".equals(source))return"redirect:/dangtuyen/showformapplyspost?recruitmentsId="+id;
+        else if("chitietcompany".equals(source))return"redirect:/dangtuyen/showcompanybyid?companyID="+idcompany;
+        return "redirect:/account/show_form_dangnhap";
 	}
 	@PostMapping("/deletefollow")
-	public String deletefollow(@RequestParam("recruitmentsId") int id,HttpSession session,Model model)
+	public String deletefollow(@RequestParam(value = "recruitmentsId",defaultValue = "0") int id,HttpSession session,Model model,@RequestParam("source")String source,@RequestParam(value = "companyID",defaultValue = "0")int idcompany)
 	{
 		String gmail = (String) session.getAttribute("userEmail");
         System.out.println("userEmail in profile_company_controller: " + gmail); 
@@ -350,9 +381,18 @@ public class dangtuyen_controller {
             System.out.println("userEmail is null, redirecting to login page");
             return "redirect:/account/show_form_dangky";
         }
-        Recruitment recruitment=dangtuyen_service.timRecruitmentbyid(id);
-        dangtuyen_service.deleteFollowCompany(user2, recruitment.getCompany().getId());
-        return"redirect:/dangtuyen/showformapplyspost?recruitmentsId="+id;
+        if("applipost".equals(source))
+        {
+        	Recruitment recruitment=dangtuyen_service.timRecruitmentbyid(id);
+            dangtuyen_service.deleteFollowCompany(user2, recruitment.getCompany().getId());
+        	return"redirect:/dangtuyen/showformapplyspost?recruitmentsId="+id;
+       	}
+        else if("chitietcompany".equals(source))
+        {
+        	dangtuyen_service.deleteFollowCompany(user2,idcompany);
+        	return"redirect:/dangtuyen/showcompanybyid?companyID="+idcompany;
+        }
+        return "redirect:/account/show_form_dangnhap";
 	}
 	@GetMapping("/showformlistsavejob")
 	public String showlistsavejob(Model model, HttpSession session,
@@ -494,9 +534,12 @@ public class dangtuyen_controller {
             System.out.println("userEmail is null, redirecting to login page");
             return "redirect:/account/show_form_dangky";
         }
+        boolean isfollow=dangtuyen_service.timFollowCompanybyuserandidrecruirement(user2, id)!=null;
         Company company=account__service.timcompanybyid(id);
         model.addAttribute("company",company);
         model.addAttribute("user",user2);
+        model.addAttribute("isfollow",isfollow);
+        System.out.print("welldone");
         return "companychitiet";
 	}
 }

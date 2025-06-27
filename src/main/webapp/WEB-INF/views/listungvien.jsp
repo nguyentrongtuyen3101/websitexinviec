@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -9,117 +10,107 @@
     <title>Danh Sách Ứng Viên - JobVN</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        <style>
-    .profile-container {
-        max-width: 1200px;
-        margin: 20px auto;
-        padding: 20px;
-        background-color: #f9f9f9;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .section-title {
-        font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 20px;
-        color: #333;
-        text-align: center;
-    }
-
-    .applicant-table {
-        width: 100%;
-        border-collapse: collapse;
-        background-color: #fff;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .applicant-table th,
-    .applicant-table td {
-        padding: 12px;
-        text-align: center;
-        border-bottom: 1px solid #ddd;
-    }
-
-    .applicant-table th {
-        background-color: #007bff;
-        color: white;
-        font-weight: bold;
-    }
-
-    .applicant-table tr:nth-child(even) {
-        background-color: #f8f9fa;
-    }
-
-    .applicant-table tr:hover {
-        background-color: #e9ecef;
-    }
-
-    .avatar-img {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        object-fit: cover;
-    }
-
-    .file-icon {
-        width: 30px;
-        height: 30px;
-        margin-right: 10px;
-        vertical-align: middle;
-    }
-
-    .cv-link {
-        color: #007bff;
-        text-decoration: none;
-        vertical-align: middle;
-    }
-
-    .cv-link:hover {
-        text-decoration: underline;
-    }
-
-    .title-link {
-        color: #007bff;
-        text-decoration: none;
-    }
-
-    .title-link:hover {
-        text-decoration: underline;
-    }
-
-    .file-status {
-        text-align: center;
-        color: #666;
-        font-style: italic;
-        margin-top: 20px;
-    }
-
-    /* Responsive design */
-    @media (max-width: 768px) {
-        .applicant-table {
-            display: block;
-            overflow-x: auto;
+        body {
+            background-color: #C9E4D6;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #006241;
+            line-height: 1.6;
         }
-
+        .profile-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 98, 65, 0.1);
+            border: 1px solid #00676B;
+        }
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #006241;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #00676B;
+            text-align: center;
+        }
+        .applicant-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #f5f7f5;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0, 98, 65, 0.1);
+            border: 1px solid #00676B;
+        }
         .applicant-table th,
         .applicant-table td {
-            min-width: 150px;
+            padding: 0.75rem;
+            text-align: center;
+            border-bottom: 1px solid #00676B;
         }
-
+        .applicant-table th {
+            background-color: #C9E4D6;
+            color: #006241;
+            font-weight: 600;
+        }
+        .applicant-table td {
+            color: #00676B;
+        }
+        .applicant-table tr:nth-child(even) {
+            background-color: #f5f7f5;
+        }
+        .applicant-table tr:hover {
+            background-color: #C9E4D6;
+        }
         .avatar-img {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid #00676B;
         }
-
         .file-icon {
-            width: 25px;
-            height: 25px;
+            width: 30px;
+            height: 30px;
+            margin-right: 0.5rem;
+            vertical-align: middle;
         }
-    }
-</style>
+        .cv-link, .title-link {
+            color: #006241;
+            text-decoration: none;
+        }
+        .cv-link:hover, .title-link:hover {
+            color: #C82E31;
+            text-decoration: underline;
+        }
+        .file-status {
+            text-align: center;
+            color: #00676B;
+            font-size: 0.95rem;
+            padding: 1.5rem;
+            font-weight: 500;
+        }
+        @media (max-width: 768px) {
+            .applicant-table {
+                display: block;
+                overflow-x: auto;
+            }
+            .applicant-table th,
+            .applicant-table td {
+                min-width: 150px;
+                font-size: 0.8rem;
+                padding: 0.5rem;
+            }
+            .avatar-img {
+                width: 40px;
+                height: 40px;
+            }
+            .file-icon {
+                width: 25px;
+                height: 25px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -165,7 +156,7 @@
                                     <span class="file-preview">
                                         <c:choose>
                                             <c:when test="${fileExt == 'png' || fileExt == 'jpg' || fileExt == 'jpeg'}">
-                                                <img src="${pageContext.request.contextPath}/uploads/${fileName}" alt="File preview" class="file-icon">
+                                                <img src="${pageContext.request.contextPath}/Uploads/${fileName}" alt="File preview" class="file-icon">
                                             </c:when>
                                             <c:when test="${fileExt == 'pdf'}">
                                                 <img src="${pageContext.request.contextPath}/resources/images/pdf-icon.png" alt="PDF icon" class="file-icon">

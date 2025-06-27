@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -10,26 +11,28 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f0f2f5;
-            font-family: Arial, sans-serif;
-            overflow-x: hidden;
+            background-color: #C9E4D6;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #006241;
+            line-height: 1.6;
         }
         .profile-container {
             max-width: 1200px;
             margin: 2rem auto;
             padding: 2rem;
             background-color: #ffffff;
-            border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 98, 65, 0.1);
+            border: 1px solid #00676B;
             animation: slideUp 0.5s ease-out;
         }
         .section-title {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: #333;
-            border-bottom: 2px solid #dee2e6;
+            color: #006241;
+            margin-bottom: 1.25rem;
             padding-bottom: 0.5rem;
+            border-bottom: 2px solid #00676B;
             animation: fadeInDown 0.5s ease-in-out;
         }
         .recruitment-table {
@@ -37,46 +40,62 @@
             border-collapse: collapse;
             margin-bottom: 1.5rem;
             font-size: 0.9rem;
+            background-color: #f5f7f5;
+            border-radius: 8px;
+            border: 1px solid #00676B;
         }
         .recruitment-table th, .recruitment-table td {
-            padding: 0.5rem;
+            padding: 0.75rem;
             text-align: left;
-            border-bottom: 1px solid #dee2e6;
+            border-bottom: 1px solid #00676B;
             vertical-align: middle;
         }
         .recruitment-table th {
-            background-color: #f8f9fa;
+            background-color: #C9E4D6;
             font-weight: 600;
-            color: #333;
+            color: #006241;
         }
         .recruitment-table td {
             white-space: nowrap;
+            color: #00676B;
+        }
+        .recruitment-table tr:hover {
+            background-color: #C9E4D6;
         }
         .action-btn {
-            padding: 0.25rem 0.75rem;
+            padding: 0.4rem 1rem;
             margin-right: 0.25rem;
-            border-radius: 5px;
-            font-size: 0.8rem;
-            transition: all 0.3s ease;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
         }
         .action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+            box-shadow: 0 2px 6px rgba(0, 98, 65, 0.15);
         }
         .detail-btn {
-            background-color: #007bff;
-            color: #ffffff;
+            background-color: #F1AF00;
+            color: #006241;
             border: none;
+        }
+        .detail-btn:hover {
+            background-color: #d89b00;
         }
         .update-btn {
-            background-color: #ffc107;
-            color: #333;
-            border: none;
-        }
-        .delete-btn {
-            background-color: #dc3545;
+            background-color: #006241;
             color: #ffffff;
             border: none;
+        }
+        .update-btn:hover {
+            background-color: #00676B;
+        }
+        .delete-btn {
+            background-color: #b91c1c;
+            color: #ffffff;
+            border: none;
+        }
+        .delete-btn:hover {
+            background-color: #a31414;
         }
         .pagination {
             margin-top: 1.5rem;
@@ -85,25 +104,40 @@
         .pagination a {
             margin: 0 0.25rem;
             padding: 0.5rem 1rem;
-            border: 1px solid #dee2e6;
-            border-radius: 5px;
+            border: 1px solid #00676B;
+            border-radius: 6px;
             text-decoration: none;
-            color: #007bff;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            color: #006241;
+            transition: all 0.2s ease;
         }
         .pagination a:hover {
-            background-color: #007bff;
+            background-color: #006241;
             color: #ffffff;
         }
-        .pagination .active {
-            background-color: #007bff;
+        .pagination souver.active {
+            background-color: #006241;
             color: #ffffff;
-            border-color: #007bff;
+            border-color: #00676B;
         }
         .pagination .disabled {
-            color: #6c757d;
+            color: #00676B;
+            opacity: 0.5;
             pointer-events: none;
-            border-color: #dee2e6;
+        }
+        .badge.bg-success {
+            background-color: #006241 !important;
+            color: #ffffff;
+        }
+        .badge.bg-danger {
+            background-color: #b91c1c !important;
+            color: #ffffff;
+        }
+        .file-status {
+            text-align: center;
+            color: #00676B;
+            font-size: 0.95rem;
+            padding: 1.5rem;
+            font-weight: 500;
         }
         @keyframes fadeInDown {
             from { opacity: 0; transform: translateY(-20px); }
@@ -119,15 +153,15 @@
                 margin: 1rem;
             }
             .section-title {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
             }
             .recruitment-table th, .recruitment-table td {
                 font-size: 0.8rem;
-                padding: 0.3rem;
+                padding: 0.5rem;
             }
             .action-btn {
-                padding: 0.2rem 0.5rem;
-                font-size: 0.7rem;
+                padding: 0.3rem 0.75rem;
+                font-size: 0.8rem;
             }
         }
     </style>

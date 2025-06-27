@@ -40,6 +40,10 @@ public class home_controller {
 		List<Category> listcCategories=dangtuyen_service.getcategory();
 		model.addAttribute("listcCategories",listcCategories);
 		model.addAttribute("now", new Date()); 
+		List<Recruitment>recruitments=dangtuyen_service.getnewlistRecruitments();
+		List<Category> categories=dangtuyen_service.getTop4CategoriesByJobCount();
+		model.addAttribute("recruitments",recruitments);
+		model.addAttribute("categories",categories);
 		return"home";
 	}
 	@GetMapping("/timkiemlob")
@@ -100,6 +104,10 @@ public class home_controller {
             }
             model.addAttribute("saveStatusMap", saveStatusMap);
         }
+        List<Recruitment>recruitments=dangtuyen_service.getnewlistRecruitments();
+		List<Category> categories=dangtuyen_service.getTop4CategoriesByJobCount();
+		model.addAttribute("recruitments",recruitments);
+		model.addAttribute("categories",categories);
         return "home";
 	}
 }

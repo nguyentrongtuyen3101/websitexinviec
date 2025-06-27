@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -9,46 +10,63 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f0f2f5;
+            background-color: #C9E4D6;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #006241;
         }
         .forgot-container {
-            background-color: white;
+            background-color: #ffffff;
             padding: 2rem;
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 6px rgba(0, 98, 65, 0.1);
             max-width: 400px;
             width: 100%;
+            border: 1px solid #00676B;
+            animation: slideUp 0.5s ease-out;
         }
         .forgot-container h2 {
             text-align: center;
             margin-bottom: 1.5rem;
-            color: #333;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #006241;
+        }
+        .form-control {
+            border: 1px solid #00676B;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #00676B;
         }
         .form-control:focus {
-            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1);
+            box-shadow: 0 0 0 0.25rem rgba(0, 103, 107, 0.1);
+            border-color: #00676B;
         }
         .btn-primary {
-            background-color: #007bff;
+            background-color: #F1AF00;
             border: none;
             width: 100%;
             padding: 0.75rem;
-            font-size: 1rem;
+            font-size: 0.9rem;
+            color: #006241;
+            transition: all 0.2s ease;
         }
         .btn-primary:hover {
-            background-color: #0056b3;
+            background-color: #d89b00;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 6px rgba(0, 98, 65, 0.15);
         }
         .form-label {
-            font-weight: 500;
-            color: #555;
+            font-weight: 600;
+            color: #006241;
+            font-size: 0.9rem;
         }
         .error-message {
-            color: red;
+            color: #b91c1c;
             font-size: 0.875rem;
             margin-top: 0.25rem;
             display: none;
@@ -56,6 +74,18 @@
         .alert-error {
             margin-bottom: 1rem;
             text-align: center;
+            background-color: #f5f7f5;
+            border: 1px solid #b91c1c;
+            color: #b91c1c;
+            border-radius: 6px;
+        }
+        .alert-success {
+            margin-bottom: 1rem;
+            text-align: center;
+            background-color: #f5f7f5;
+            border: 1px solid #006241;
+            color: #006241;
+            border-radius: 6px;
         }
         .modal {
             display: none;
@@ -64,31 +94,43 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 98, 65, 0.5);
             justify-content: center;
             align-items: center;
         }
         .modal-content {
-            background-color: white;
+            background-color: #ffffff;
             padding: 2rem;
             border-radius: 10px;
             width: 300px;
             text-align: center;
+            border: 1px solid #00676B;
+        }
+        .modal-content h3 {
+            font-size: 1.2rem;
+            color: #006241;
+            margin-bottom: 1rem;
         }
         .close {
             float: right;
             font-size: 1.5rem;
             cursor: pointer;
+            color: #006241;
+        }
+        .close:hover {
+            color: #00676B;
         }
         .login-link {
             text-align: center;
             margin-top: 1rem;
         }
         .login-link a {
-            color: #007bff;
+            color: #006241;
             text-decoration: none;
+            font-size: 0.9rem;
         }
         .login-link a:hover {
+            color: #00676B;
             text-decoration: underline;
         }
         .success-modal {
@@ -98,16 +140,49 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 98, 65, 0.5);
             justify-content: center;
             align-items: center;
         }
         .success-modal-content {
-            background-color: white;
+            background-color: #ffffff;
             padding: 2rem;
             border-radius: 10px;
             width: 300px;
             text-align: center;
+            border: 1px solid #00676B;
+        }
+        .success-modal-content h3 {
+            font-size: 1.2rem;
+            color: #006241;
+            margin-bottom: 1rem;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) {
+            .forgot-container {
+                padding: 1rem;
+                margin: 1rem;
+            }
+            .forgot-container h2 {
+                font-size: 1.3rem;
+            }
+            .form-control {
+                font-size: 0.8rem;
+            }
+            .btn-primary {
+                padding: 0.5rem;
+                font-size: 0.8rem;
+            }
+            .form-label {
+                font-size: 0.8rem;
+            }
+            .modal-content, .success-modal-content {
+                width: 90%;
+                padding: 1rem;
+            }
         }
     </style>
 </head>
@@ -163,7 +238,7 @@
         <div class="modal-content">
         <c:if test="${not empty errorotp}">
             <div class="alert alert-danger alert-error">${errorotp}</div>
-    	 </c:if>
+        </c:if>
             <span class="close">×</span>
             <h3>Nhập mã OTP</h3>
             <p>Mã OTP đã được gửi đến email của bạn.</p>
@@ -190,8 +265,7 @@
     <script>
         // Biểu thức chính quy
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/; // Cho phép ký tự đặc biệt
-
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
         // Xử lý form trước khi submit
         document.getElementById('forgotForm').addEventListener('submit', function(event) {
             let isValid = true;

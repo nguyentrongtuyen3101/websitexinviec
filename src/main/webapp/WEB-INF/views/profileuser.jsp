@@ -5,19 +5,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thông Tin Công Ty - JobVN</title>
+    <title>Thông Tin Người Dùng - JobVN</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
-            background-color: #f0f2f5;
-            font-family: Arial, sans-serif;
-            overflow-x: hidden;
+            background-color: #C9E4D6;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #006241;
+            line-height: 1.6;
+        }
+        .profile-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 98, 65, 0.1);
+            border: 1px solid #00676B;
+        }
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            color: #006241;
+            border-bottom: 2px solid #00676B;
+            padding-bottom: 0.5rem;
         }
         .profile-header {
-            background-color: #343a40;
+            background-color: #006241;
             padding: 2rem 0;
             text-align: center;
-            border-bottom: 1px solid #495057;
+            border-bottom: 1px solid #00676B;
             animation: fadeIn 0.5s ease-in-out;
         }
         .avatar-preview {
@@ -46,62 +65,47 @@
             padding: 0.5rem 1rem;
             font-size: 0.9rem;
             border-radius: 5px;
+            background-color: #F1AF00;
+            color: #006241;
+            border: none;
         }
         .avatar-preview:hover .upload-btn {
             opacity: 1;
         }
         .upload-btn:hover {
-            background-color: #0056b3;
-            color: #ffffff;
-        }
-        .profile-container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background-color: #ffffff;
-            border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            animation: slideUp 0.5s ease-out;
-        }
-        .section-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: #333;
-            border-bottom: 2px solid #dee2e6;
-            padding-bottom: 0.5rem;
-            animation: fadeInDown 0.5s ease-in-out;
+            background-color: #d89b00;
         }
         .form-group {
             margin-bottom: 1.5rem;
         }
         .form-label {
             font-weight: 600;
-            color: #444;
+            color: #006241;
             margin-bottom: 0.5rem;
         }
         .form-control {
-            border: 2px solid #ced4da;
-            border-radius: 8px;
+            border: 1px solid #00676B;
+            border-radius: 6px;
+            background-color: #f5f7f5;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
         .form-control:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+            border-color: #006241;
+            box-shadow: 0 0 0 0.25rem rgba(0, 98, 65, 0.25);
         }
         .file-upload {
             margin-top: 0.75rem;
         }
         .file-status {
-            color: #666;
+            color: #00676B;
             font-size: 1rem;
             margin-top: 0.75rem;
             animation: fadeIn 0.5s ease-in-out;
         }
         .file-preview img {
-            max-width: 60px;
-            max-height: 60px;
-            margin-right: 0.75rem;
+            max-width: 40px;
+            max-height: 40px;
+            margin-right: 0.5rem;
             vertical-align: middle;
             border-radius: 5px;
             transition: transform 0.3s ease;
@@ -110,37 +114,92 @@
             transform: scale(1.1);
         }
         .file-link {
-            color: #007bff;
+            color: #006241;
             text-decoration: none;
             transition: color 0.3s ease;
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+            vertical-align: middle;
         }
         .file-link:hover {
-            color: #0056b3;
-            text-decoration: underline;
+            color: #00676B;
+            text-overflow: clip;
+            max-width: none;
         }
         .editable {
             transition: border-color 0.3s ease, background-color 0.3s ease;
         }
         .editable-active {
-            border-color: #ffcc00;
+            border-color: #F1AF00;
             background-color: #fff3cd;
             animation: blink 1s infinite;
         }
         .edit-btn, .save-btn {
             margin-top: 1.5rem;
             padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
+            border-radius: 6px;
+            background-color: #F1AF00;
+            border: none;
+            color: #006241;
+            font-weight: 500;
+            transition: background-color 0.2s;
         }
         .edit-btn:hover, .save-btn:hover {
+            background-color: #d89b00;
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .error-message {
-            color: #dc3545;
+            color: #b91c1c;
             font-size: 0.9rem;
             display: none;
             animation: fadeIn 0.5s ease-in-out;
+        }
+        .cv-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+        .cv-table th, .cv-table td {
+            padding: 0.5rem;
+            text-align: left;
+            border-bottom: 1px solid #00676B;
+            vertical-align: middle;
+        }
+        .cv-table th {
+            background-color: #f5f7f5;
+            font-weight: 600;
+            color: #006241;
+        }
+        .cv-table td {
+            white-space: nowrap;
+        }
+        .action-btn {
+            padding: 0.25rem 0.75rem;
+            margin-right: 0.25rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .delete-btn {
+            background-color: #b91c1c;
+            color: #ffffff;
+            border: none;
+        }
+        .default-btn {
+            background-color: #28a745;
+            color: #ffffff;
+            border: none;
+        }
+        .save-btn-container {
+            text-align: center;
         }
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -167,7 +226,7 @@
                 height: 120px;
             }
             .section-title {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
             }
             .form-group {
                 margin-bottom: 1rem;
@@ -177,96 +236,11 @@
                 padding: 0.5rem 1rem;
             }
         }
-        /* Căn giữa nút Save */
-        .save-btn-container {
-            text-align: center;
-        }
-        /* Tùy chỉnh icon file đính kèm */
-        .file-icon {
-            width: 40px;
-            height: 40px;
-            margin-right: 0.5rem;
-            vertical-align: middle;
-        }
-        /* Style cho table quản lý CV */
-        .cv-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 1.5rem;
-            font-size: 0.9rem; /* Giảm kích thước font để nội dung nhỏ hơn */
-        }
-        .cv-table th, .cv-table td {
-            padding: 0.5rem; /* Giảm padding để tiết kiệm không gian */
-            text-align: left;
-            border-bottom: 1px solid #dee2e6;
-            vertical-align: middle; /* Đảm bảo căn giữa theo chiều dọc */
-        }
-        .cv-table th {
-            background-color: #f8f9fa;
-            font-weight: 600;
-            color: #333;
-        }
-        .cv-table td {
-            white-space: nowrap; /* Ngăn chặn ngắt dòng */
-        }
-        .file-preview img {
-            max-width: 40px; /* Giảm kích thước ảnh xem trước */
-            max-height: 40px;
-            margin-right: 0.5rem;
-            vertical-align: middle;
-            border-radius: 5px;
-            transition: transform 0.3s ease;
-        }
-        .file-preview img:hover {
-            transform: scale(1.1);
-        }
-        .file-link {
-            color: #007bff;
-            text-decoration: none;
-            transition: color 0.3s ease;
-            max-width: 150px; /* Giới hạn chiều rộng tối đa cho tên file */
-            overflow: hidden; /* Ẩn phần vượt quá */
-            text-overflow: ellipsis; /* Thêm dấu "..." khi tên file quá dài */
-            display: inline-block; /* Đảm bảo hoạt động với max-width */
-            vertical-align: middle;
-        }
-        .file-link:hover {
-            color: #0056b3;
-            text-overflow: clip; /* Hiển thị đầy đủ khi hover */
-            max-width: none; /* Xóa giới hạn khi hover */
-        }
-        .action-btn {
-            padding: 0.25rem 0.75rem; /* Giảm padding cho nút hành động */
-            margin-right: 0.25rem;
-            border-radius: 5px;
-            font-size: 0.8rem; /* Giảm kích thước font của nút */
-            transition: all 0.3s ease;
-        }
-        .action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Giảm độ đậm của bóng */
-        }
-        /* Đảm bảo nút hành động nằm trên một dòng */
-        .cv-table td:last-child {
-            white-space: nowrap; /* Ngăn ngắt dòng cho cột hành động */
-            min-width: 120px; /* Đảm bảo cột hành động có đủ không gian */
-        }
-        .delete-btn {
-            background-color: #dc3545;
-            color: #ffffff;
-            border: none;
-        }
-        .default-btn {
-            background-color: #28a745;
-            color: #ffffff;
-            border: none;
-        }
     </style>
 </head>
 <body>
     <jsp:include page="header.jsp" />
 
-    <!-- Phần header phụ với ảnh đại diện -->
     <div class="profile-header">
         <div class="avatar-upload">
             <div class="avatar-preview position-relative">
@@ -276,12 +250,12 @@
                 <c:if test="${empty user.image}">
                     <img src="${pageContext.request.contextPath}/resources/images/default-avatar.jpg" alt="Ảnh đại diện" id="avatarPreview">
                 </c:if>
-                <button type="button" class="btn btn-primary upload-btn" id="uploadTrigger">Upload</button>
+                <button type="button" class="btn upload-btn" id="uploadTrigger">Upload</button>
                 <form action="${pageContext.request.contextPath}/profilecompany/uploadimage" method="post" enctype="multipart/form-data" id="avatarUploadForm" style="display:none;">
                     <input type="file" id="avatarUpload" name="imageFile" accept="image/*" onchange="previewImage(event)">
                 </form>
             </div>
-            <button type="submit" class="btn btn-success save-btn" id="saveBtn" form="avatarUploadForm" style="display:none;">Save</button>
+            <button type="submit" class="btn save-btn" id="saveBtn" form="avatarUploadForm" style="display:none;">Save</button>
             <c:if test="${not empty success}">
                 <p style="color:green;">${success}</p>
             </c:if>
@@ -291,10 +265,8 @@
         </div>
     </div>
 
-    <!-- Phần nội dung chính -->
     <div class="profile-container">
         <div class="row">
-            <!-- Thông tin cá nhân -->
             <div class="col-md-6">
                 <div class="section-title">Thông Tin Cá Nhân</div>
                 <form id="personalInfoForm" action="${pageContext.request.contextPath}/profilecompany/updateacount" method="post" enctype="multipart/form-data">
@@ -364,98 +336,97 @@
                         <input type="hidden" id="existingPersonalDescription" name="description" value="${not empty user.description ? user.description : ''}">
                     </div>
                     <div class="save-btn-container">
-                        <button type="button" class="btn btn-secondary edit-btn" onclick="toggleEditPersonalInfo()">Chỉnh sửa</button>
-                        <button type="submit" class="btn btn-primary save-btn d-none">Lưu</button>
+                        <button type="button" class="btn edit-btn" onclick="toggleEditPersonalInfo()">Chỉnh sửa</button>
+                        <button type="submit" class="btn save-btn d-none">Lưu</button>
                     </div>
                 </form>
             </div>
 
-            <!-- Quản lý CV -->
-			<div class="col-md-6">
-			    <div class="section-title">Quản Lý CV</div>
-			    <c:if test="${not empty cvList}">
-			        <table class="cv-table">
-			            <thead>
-			                <tr>
-			                    <th>ID</th>
-			                    <th>File CV</th>
-			                    <th>Hành động</th>
-			                </tr>
-			            </thead>
-			            <tbody>
-			                <c:forEach var="cv" items="${cvList}">
-			                    <tr>
-			                        <td>${cv.id}</td>
-			                        <td>
-			                            <c:set var="fileName" value="${cv.fileName}"/>
-			                            <c:set var="fileExt" value="${fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase()}"/>
-			                            <span class="file-preview">
-			                                <c:choose>
-			                                    <c:when test="${fileExt == 'png' || fileExt == 'jpg' || fileExt == 'jpeg'}">
-			                                        <img src="${pageContext.request.contextPath}/uploads/${fileName}" alt="File preview" class="file-icon">
-			                                    </c:when>
-			                                    <c:when test="${fileExt == 'pdf'}">
-			                                        <img src="${pageContext.request.contextPath}/resources/images/pdf-icon.png" alt="PDF icon" class="file-icon">
-			                                    </c:when>
-			                                    <c:when test="${fileExt == 'doc' || fileExt == 'docx'}">
-			                                        <img src="${pageContext.request.contextPath}/resources/images/word-icon.png" alt="Word icon" class="file-icon">
-			                                    </c:when>
-			                                    <c:otherwise>
-			                                        <img src="${pageContext.request.contextPath}/resources/images/default-file-icon.png" alt="File icon" class="file-icon">
-			                                    </c:otherwise>
-			                                </c:choose>
-			                            </span>
-			                            <a href="${pageContext.request.contextPath}/uploads/${fileName}" class="file-link" target="_blank">${fileName}</a>
-			                        </td>
-			                        <td>
-			                            <c:choose>
-			                                <c:when test="${user.cv != null && user.cv.id == cv.id}">
-			                                    <span style="color: #28a745; font-weight: bold;">Default</span>
-			                                </c:when>
-			                                <c:otherwise>
-			                                    <form action="${pageContext.request.contextPath}/profilecompany/updateCVdefault" method="post" style="display:inline;">
-			                                        <input type="hidden" name="idcv" value="${cv.id}">
-			                                        <input type="hidden" name="email" value="${user.email}">
-			                                        <button type="submit" class="btn action-btn default-btn">Set Default</button>
-			                                    </form>
-			                                </c:otherwise>
-			                            </c:choose>
-			                            <form action="${pageContext.request.contextPath}/profilecompany/deleteCV" method="post" style="display:inline;">
-			                                <input type="hidden" name="idcv" value="${cv.id}">
-			                                <button type="submit" class="btn action-btn delete-btn">Xóa</button>
-			                            </form>
-			                        </td>
-			                    </tr>
-			                </c:forEach>
-			            </tbody>
-			        </table>
-			    </c:if>
-			    <c:if test="${empty cvList}">
-			        <p class="file-status">Chưa có CV nào được tải lên.</p>
-			    </c:if>
-			
-			    <!-- Form upload CV mới -->
-			    <div class="form-group">
-			        <label for="cvFile" class="form-label">Tải lên CV mới</label>
-			        <form id="cvUploadForm" action="${pageContext.request.contextPath}/profilecompany/uploadcv" method="post" enctype="multipart/form-data">
-			            <input type="hidden" name="userEmail" value="${user.email}">
-			            <input type="file" class="form-control file-upload" id="cvFile" name="fileName" accept=".pdf,.doc,.docx,image/*" onchange="updateFileStatus('cvFileStatus', this)" required>
-			            <div class="file-status" id="cvFileStatus">
-			                <span class="file-preview">
-			                    <img src="${pageContext.request.contextPath}/resources/images/default-file-icon.png" alt="File icon" class="file-icon">
-			                </span>
-			                Chưa chọn tệp
-			            </div>
-			            <div class="save-btn-container">
-			                <button type="submit" class="btn btn-primary save-btn">Tải lên</button>
-			            </div>
-			        </form>
-			    </div>
-			</div>
+            <div class="col-md-6">
+                <div class="section-title">Quản Lý CV</div>
+                <c:if test="${not empty cvList}">
+                    <table class="cv-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>File CV</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="cv" items="${cvList}">
+                                <tr>
+                                    <td>${cv.id}</td>
+                                    <td>
+                                        <c:set var="fileName" value="${cv.fileName}"/>
+                                        <c:set var="fileExt" value="${fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase()}"/>
+                                        <span class="file-preview">
+                                            <c:choose>
+                                                <c:when test="${fileExt == 'png' || fileExt == 'jpg' || fileExt == 'jpeg'}">
+                                                    <img src="${pageContext.request.contextPath}/uploads/${fileName}" alt="File preview" class="file-icon">
+                                                </c:when>
+                                                <c:when test="${fileExt == 'pdf'}">
+                                                    <img src="${pageContext.request.contextPath}/resources/images/pdf-icon.png" alt="PDF icon" class="file-icon">
+                                                </c:when>
+                                                <c:when test="${fileExt == 'doc' || fileExt == 'docx'}">
+                                                    <img src="${pageContext.request.contextPath}/resources/images/word-icon.png" alt="Word icon" class="file-icon">
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <img src="${pageContext.request.contextPath}/resources/images/default-file-icon.png" alt="File icon" class="file-icon">
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </span>
+                                        <a href="${pageContext.request.contextPath}/uploads/${fileName}" class="file-link" target="_blank">${fileName}</a>
+                                    </td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${user.cv != null && user.cv.id == cv.id}">
+                                                <span style="color: #28a745; font-weight: bold;">Default</span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <form action="${pageContext.request.contextPath}/profilecompany/updateCVdefault" method="post" style="display:inline;">
+                                                    <input type="hidden" name="idcv" value="${cv.id}">
+                                                    <input type="hidden" name="email" value="${user.email}">
+                                                    <button type="submit" class="btn action-btn default-btn">Set Default</button>
+                                                </form>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <form action="${pageContext.request.contextPath}/profilecompany/deleteCV" method="post" style="display:inline;">
+                                            <input type="hidden" name="idcv" value="${cv.id}">
+                                            <button type="submit" class="btn action-btn delete-btn">Xóa</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </c:if>
+                <c:if test="${empty cvList}">
+                    <p class="file-status">Chưa có CV nào được tải lên.</p>
+                </c:if>
+
+                <div class="form-group">
+                    <label for="cvFile" class="form-label">Tải lên CV mới</label>
+                    <form id="cvUploadForm" action="${pageContext.request.contextPath}/profilecompany/uploadcv" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="userEmail" value="${user.email}">
+                        <input type="file" class="form-control file-upload" id="cvFile" name="fileName" accept=".pdf,.doc,.docx,image/*" onchange="updateFileStatus('cvFileStatus', this)" required>
+                        <div class="file-status" id="cvFileStatus">
+                            <span class="file-preview">
+                                <img src="${pageContext.request.contextPath}/resources/images/default-file-icon.png" alt="File icon" class="file-icon">
+                            </span>
+                            Chưa chọn tệp
+                        </div>
+                        <div class="save-btn-container">
+                            <button type="submit" class="btn save-btn">Tải lên</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Giữ nguyên các hàm JavaScript hiện có
         function toggleEditPersonalInfo() {
             console.log("Toggling edit for personalInfoForm");
             const form = document.getElementById('personalInfoForm');
@@ -575,25 +546,17 @@
             document.getElementById('avatarUpload').click();
         });
 
-        document.getElementById('companyLogoTrigger')?.addEventListener('click', function() {
-            document.getElementById('companyLogoUpload')?.click();
-        });
-
         <c:if test="${not empty success}">
             document.getElementById('saveBtn').style.display = 'none';
             document.getElementById('avatarUpload').value = '';
-            document.getElementById('companyLogoSaveBtn')?.style.display = 'none';
-            document.getElementById('companyLogoUpload')?.value = '';
         </c:if>
 
-        // Validate submit cho personalInfoForm
         document.getElementById('personalInfoForm').addEventListener('submit', function(event) {
             if (!validatePersonalInfo()) {
                 event.preventDefault();
             }
         });
 
-        // Validate submit cho cvUploadForm
         document.getElementById('cvUploadForm').addEventListener('submit', function(event) {
             const cvFile = document.getElementById('cvFile').value;
             if (!cvFile) {

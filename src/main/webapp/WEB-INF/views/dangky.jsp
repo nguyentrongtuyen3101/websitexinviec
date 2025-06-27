@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -11,56 +12,87 @@
     <!-- CSS tùy chỉnh -->
     <style>
         body {
-            background-color: #f0f2f5;
+            background-color: #C9E4D6;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #006241;
         }
         .register-container {
-            background-color: white;
+            background-color: #ffffff;
             padding: 2rem;
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 6px rgba(0, 98, 65, 0.1);
             max-width: 400px;
             width: 100%;
+            border: 1px solid #00676B;
+            animation: slideUp 0.5s ease-out;
         }
         .register-container h2 {
             text-align: center;
             margin-bottom: 1.5rem;
-            color: #333;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #006241;
+        }
+        .form-control {
+            border: 1px solid #00676B;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #00676B;
         }
         .form-control:focus {
-            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1);
+            box-shadow: 0 0 0 0.25rem rgba(0, 103, 107, 0.1);
+            border-color: #00676B;
+        }
+        .form-select {
+            border: 1px solid #00676B;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #00676B;
+        }
+        .form-select:focus {
+            box-shadow: 0 0 0 0.25rem rgba(0, 103, 107, 0.1);
+            border-color: #00676B;
         }
         .btn-primary {
-            background-color: #007bff;
+            background-color: #F1AF00;
             border: none;
             width: 100%;
             padding: 0.75rem;
-            font-size: 1rem;
+            font-size: 0.9rem;
+            color: #006241;
+            transition: all 0.2s ease;
         }
         .btn-primary:hover {
-            background-color: #0056b3;
+            background-color: #d89b00;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 6px rgba(0, 98, 65, 0.15);
         }
         .btn-secondary {
-            background-color: #6c757d;
+            background-color: #006241;
             border: none;
             width: 100%;
             padding: 0.75rem;
-            font-size: 1rem;
+            font-size: 0.9rem;
+            color: #ffffff;
+            transition: all 0.2s ease;
         }
         .btn-secondary:hover {
-            background-color: #5a6268;
+            background-color: #00676B;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 6px rgba(0, 98, 65, 0.15);
         }
         .form-label {
-            font-weight: 500;
-            color: #555;
+            font-weight: 600;
+            color: #006241;
+            font-size: 0.9rem;
         }
         .error-message {
-            color: red;
+            color: #b91c1c;
             font-size: 0.875rem;
             margin-top: 0.25rem;
             display: none;
@@ -70,15 +102,44 @@
             margin-top: 1rem;
         }
         .login-link a {
-            color: #007bff;
+            color: #006241;
             text-decoration: none;
+            font-size: 0.9rem;
         }
         .login-link a:hover {
+            color: #00676B;
             text-decoration: underline;
         }
         .alert-error {
             margin-bottom: 1rem;
             text-align: center;
+            background-color: #f5f7f5;
+            border: 1px solid #b91c1c;
+            color: #b91c1c;
+            border-radius: 6px;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) {
+            .register-container {
+                padding: 1rem;
+                margin: 1rem;
+            }
+            .register-container h2 {
+                font-size: 1.3rem;
+            }
+            .form-control, .form-select {
+                font-size: 0.8rem;
+            }
+            .btn-primary, .btn-secondary {
+                padding: 0.5rem;
+                font-size: 0.8rem;
+            }
+            .form-label {
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>

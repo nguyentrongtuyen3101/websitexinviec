@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -10,8 +11,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f0f2f5;
-            font-family: Arial, sans-serif;
+            background-color: #C9E4D6;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #006241;
             overflow-x: hidden;
         }
         .profile-container {
@@ -19,16 +21,17 @@
             margin: 2rem auto;
             padding: 2rem;
             background-color: #ffffff;
-            border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 98, 65, 0.1);
+            border: 1px solid #00676B;
             animation: slideUp 0.5s ease-out;
         }
         .section-title {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 700;
             margin-bottom: 1.5rem;
-            color: #333;
-            border-bottom: 2px solid #dee2e6;
+            color: #006241;
+            border-bottom: 2px solid #00676B;
             padding-bottom: 0.5rem;
             animation: fadeInDown 0.5s ease-in-out;
         }
@@ -37,27 +40,34 @@
             border-collapse: collapse;
             margin-bottom: 1.5rem;
             font-size: 0.9rem;
+            background-color: #f5f7f5;
+            border-radius: 8px;
+            border: 1px solid #00676B;
         }
         .apply-table th, .apply-table td {
             padding: 0.75rem;
             text-align: left;
-            border-bottom: 1px solid #dee2e6;
+            border-bottom: 1px solid #00676B;
             vertical-align: middle;
         }
         .apply-table th {
-            background-color: #f8f9fa;
+            background-color: #C9E4D6;
             font-weight: 600;
-            color: #333;
+            color: #006241;
         }
         .apply-table td {
             white-space: nowrap;
+            color: #00676B;
+        }
+        .apply-table tr:hover {
+            background-color: #C9E4D6;
         }
         .avatar-img {
             width: 50px;
             height: 50px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid #dee2e6;
+            border: 1px solid #00676B;
         }
         .file-preview img {
             max-width: 40px;
@@ -65,13 +75,14 @@
             margin-right: 0.5rem;
             vertical-align: middle;
             border-radius: 5px;
-            transition: transform 0.3s ease;
+            border: 1px solid #00676B;
+            transition: transform 0.2s ease;
         }
         .file-preview img:hover {
             transform: scale(1.1);
         }
         .file-link {
-            color: #007bff;
+            color: #006241;
             text-decoration: none;
             max-width: 150px;
             overflow: hidden;
@@ -80,7 +91,7 @@
             vertical-align: middle;
         }
         .file-link:hover {
-            color: #0056b3;
+            color: #00676B;
             text-decoration: underline;
         }
         .company-logo {
@@ -89,7 +100,7 @@
             border-radius: 10%;
             overflow: hidden;
             margin-bottom: 1rem;
-            border: 2px solid #DCDCDC;
+            border: 1px solid #00676B;
         }
         .company-logo img {
             width: 100%;
@@ -97,17 +108,35 @@
             object-fit: cover;
         }
         .job-info {
-            background-color: #f8f9fa;
+            background-color: #f5f7f5;
             padding: 1.5rem;
-            border-radius: 2rem;
+            border-radius: 8px;
             margin-bottom: 2rem;
+            border: 1px solid #00676B;
         }
         .job-info p {
             margin-bottom: 0.75rem;
-            font-size: 17px;
+            font-size: 1rem;
+            color: #00676B;
         }
         .job-info p strong {
+            color: #006241;
             display: inline-block;
+        }
+        .badge.bg-success {
+            background-color: #006241 !important;
+            color: #ffffff;
+        }
+        .badge.bg-danger {
+            background-color: #b91c1c !important;
+            color: #ffffff;
+        }
+        .file-status {
+            text-align: center;
+            color: #00676B;
+            font-size: 0.95rem;
+            padding: 1.5rem;
+            font-weight: 500;
         }
         @keyframes fadeInDown {
             from { opacity: 0; transform: translateY(-20px); }
@@ -123,7 +152,7 @@
                 margin: 1rem;
             }
             .section-title {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
             }
             .apply-table th, .apply-table td {
                 font-size: 0.8rem;

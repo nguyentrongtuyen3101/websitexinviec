@@ -210,4 +210,16 @@ public class dangtuyen_service_imp implements dangtuyen_service{
 	{
 		return dangtuyen_dao.getlistApplyPosts(user);
 	}
+	@Override
+	@Transactional
+	public List<Recruitment> getnewlistRecruitments()
+	{
+		return dangtuyen_dao.getnewlistRecruitments();
+	}
+	@Override
+	@Transactional
+	 public List<Category> getTop4CategoriesByJobCount()
+	 {
+		return dangtuyen_dao.getTop4CategoriesByJobCount();
+	 }
 }

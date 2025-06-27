@@ -47,4 +47,6 @@ public interface dangtuyen_dao {
 	public ApplyPost timApplyPostbybyrecruirement(Recruitment recruitment);
 	public void deleteapplypostbycruiment(Recruitment recruitment);
 	public List<ApplyPost> getlistApplyPosts(User user);
+	public List<Recruitment> getnewlistRecruitments();
+	public List<Category> getTop4CategoriesByJobCount();
 }

@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -9,15 +10,16 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f0f2f5;
-            font-family: Arial, sans-serif;
-            overflow-x: hidden;
+            background-color: #C9E4D6;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #006241;
+            line-height: 1.6;
         }
         .profile-header {
-            background-color: #343a40;
+            background-color: #006241;
             padding: 2rem 0;
             text-align: center;
-            border-bottom: 1px solid #495057;
+            border-bottom: 1px solid #00676B;
             animation: fadeIn 0.5s ease-in-out;
         }
         .profile-container {
@@ -25,46 +27,49 @@
             margin: 2rem auto;
             padding: 2rem;
             background-color: #ffffff;
-            border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 98, 65, 0.1);
+            border: 1px solid #00676B;
             animation: slideUp 0.5s ease-out;
         }
         .section-title {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: #333;
-            border-bottom: 2px solid #dee2e6;
+            color: #006241;
+            margin-bottom: 1.25rem;
             padding-bottom: 0.5rem;
+            border-bottom: 2px solid #00676B;
         }
         .form-group {
             margin-bottom: 1.5rem;
         }
         .form-label {
             font-weight: 600;
-            color: #444;
+            color: #006241;
             margin-bottom: 0.5rem;
         }
         .company-info {
-            background-color: #f8f9fa;
+            background-color: #f5f7f5;
             padding: 1.5rem;
-            border-radius: 2rem;
+            border-radius: 8px;
             margin-bottom: 2rem;
+            border: 1px solid #00676B;
         }
         .company-info p {
             margin-bottom: 0.75rem;
-            font-size: 17px;
+            font-size: 1rem;
+            color: #00676B;
         }
         .company-info p strong {
-            color: inline-block;
+            color: #006241;
         }
         .company-logo {
             width: 120px;
             height: 120px;
-            border-radius: 10%;
+            border-radius: 8px;
             overflow: hidden;
             margin-bottom: 1rem;
-            border: 2px solid #DCDCDC;
+            border: 1px solid #00676B;
         }
         .company-logo img {
             width: 100%;
@@ -75,18 +80,37 @@
             text-align: center;
         }
         .back-btn {
-            padding: 0.75rem 2rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            background-color: #F1AF00;
+            color: #006241;
+            border: none;
+            transition: all 0.2s ease;
         }
         .back-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #d89b00;
+            transform: translateY(-4px);
+            box-shadow: 0 2px 6px rgba(0, 98, 65, 0.15);
         }
         .error-message {
-            color: #dc3545;
+            color: #b91c1c;
             font-size: 0.9rem;
             margin-top: 0.5rem;
+        }
+        .file-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 0.5rem;
+            vertical-align: middle;
+        }
+        .file-link {
+            color: #006241;
+            text-decoration: none;
+        }
+        .file-link:hover {
+            color: #00676B;
+            text-decoration: underline;
         }
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -102,24 +126,30 @@
                 margin: 1rem;
             }
             .section-title {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
             }
             .form-group {
                 margin-bottom: 1rem;
             }
             .back-btn {
-                padding: 0.5rem 1rem;
+                padding: 0.3rem 0.75rem;
+                font-size: 0.8rem;
             }
             .company-info {
                 padding: 1rem;
             }
+            .file-icon {
+                width: 30px;
+                height: 30px;
+            }
         }
-         /* Tùy chỉnh icon file đính kèm */
-        .file-icon {
-            width: 40px;
-            height: 40px;
-            margin-right: 0.5rem;
-            vertical-align: middle;
+        .follow{
+        background-color: #006241;
+        margin-bottom: 20px;
+        }
+        .unfollow{
+        background-color: #B6292B;
+        margin-bottom: 20px;
         }
     </style>
 </head>
@@ -139,6 +169,18 @@
                         <img src="${pageContext.request.contextPath}/resources/images/default-logo.jpg" alt="Logo công ty">
                     </c:if>
                 </div>
+                <c:if test="${isfollow}">
+                	<form id="formfollow" action="${pageContext.request.contextPath}/dangtuyen/deletefollow?source=chitietcompany" method="post" enctype="multipart/form-data" >
+                		<input type="hidden" name="companyID" value="${company.id}">
+                		<button type="submit" class="btn btn-primary apply-btn unfollow">Unfollow</button>
+                	</form>
+                </c:if>
+                <c:if test="${!isfollow}">
+                	<form id="formfollow" action="${pageContext.request.contextPath}/dangtuyen/followcompany?source=chitietcompany" method="post" enctype="multipart/form-data" >
+                		<input type="hidden" name="companyID" value="${company.id}">
+                		<button type="submit" class="btn btn-primary apply-btn follow">follow</button>
+                	</form>
+                </c:if>
                 <div class="company-info">
                     <p><strong>Tên Công Ty:</strong> ${company.nameCompany}</p>
                     <p><strong>Địa Chỉ:</strong> ${company.address}</p>
@@ -151,27 +193,27 @@
                                     <c:choose>
                                         <c:when test="${fileExt == 'png' || fileExt == 'jpg' || fileExt == 'jpeg'}">
                                             <span class="file-preview">
-                                                <img src="${pageContext.request.contextPath}/uploads/${fileName}" alt="File preview" class="file-icon">
+                                                <img src="${pageContext.request.contextPath}/Uploads/${fileName}" alt="File preview" class="file-icon">
                                             </span>
-                                            <a href="${pageContext.request.contextPath}/uploads/${fileName}" class="file-link" target="_blank">${fileName}</a>
+                                            <a href="${pageContext.request.contextPath}/Uploads/${fileName}" class="file-link" target="_blank">${fileName}</a>
                                         </c:when>
                                         <c:when test="${fileExt == 'pdf'}">
                                             <span class="file-preview">
                                                 <img src="${pageContext.request.contextPath}/resources/images/pdf-icon.png" alt="PDF icon" class="file-icon">
                                             </span>
-                                            <a href="${pageContext.request.contextPath}/uploads/${fileName}" class="file-link" target="_blank">${fileName}</a>
+                                            <a href="${pageContext.request.contextPath}/Uploads/${fileName}" class="file-link" target="_blank">${fileName}</a>
                                         </c:when>
                                         <c:when test="${fileExt == 'doc' || fileExt == 'docx'}">
                                             <span class="file-preview">
                                                 <img src="${pageContext.request.contextPath}/resources/images/word-icon.png" alt="Word icon" class="file-icon">
                                             </span>
-                                            <a href="${pageContext.request.contextPath}/uploads/${fileName}" class="file-link" target="_blank">${fileName}</a>
+                                            <a href="${pageContext.request.contextPath}/Uploads/${fileName}" class="file-link" target="_blank">${fileName}</a>
                                         </c:when>
                                         <c:otherwise>
                                             <span class="file-preview">
                                                 <img src="${pageContext.request.contextPath}/resources/images/default-file-icon.png" alt="File icon" class="file-icon">
                                             </span>
-                                            <a href="${pageContext.request.contextPath}/uploads/${fileName}" class="file-link" target="_blank">${fileName}</a>
+                                            <a href="${pageContext.request.contextPath}/Uploads/${fileName}" class="file-link" target="_blank">${fileName}</a>
                                         </c:otherwise>
                                     </c:choose>
                                 </c:when>
@@ -184,7 +226,7 @@
                             </c:choose></p>
                 </div>
                 <div class="save-btn-container">
-                    <a href="${pageContext.request.contextPath}/home/show_home" class="btn btn-primary back-btn">Quay Về Trang Chủ</a>
+                    <a href="${pageContext.request.contextPath}/home/show_home" class="btn back-btn">Quay Về Trang Chủ</a>
                 </div>
             </div>
         </div>
